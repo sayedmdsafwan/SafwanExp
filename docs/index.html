@@ -1,92 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Safwan Exp · Expense Ledger</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:'Inter',sans-serif;
-    background:#0a0b0d;
-    background-image:radial-gradient(circle at 12% 0%, rgba(47,196,141,0.20), transparent 42%);
-    color:#f4f5f6;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
-  }
-  .card{
-    max-width:460px;
-    width:100%;
-    text-align:center;
-  }
-  .logo{
-    width:64px;height:64px;border-radius:18px;
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 22px;
-    background:linear-gradient(155deg, rgba(47,196,141,0.15), transparent 70%);
-    border:1.6px solid #2fc48d;
-    font-size:28px;font-weight:700;color:#2fc48d;
-    font-family:monospace;
-  }
-  h1{font-size:26px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
-  p.tagline{color:#98a0a6;font-size:14.5px;line-height:1.6;margin-bottom:30px;}
-  .features{
-    display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:34px;
-  }
-  .chip{
-    font-size:11.5px;font-weight:600;color:#98a0a6;
-    background:#15171b;border:1px solid #212428;
-    padding:6px 12px;border-radius:999px;
-  }
-  .btn-row{display:flex;flex-direction:column;gap:12px;}
-  .btn{
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    padding:15px;border-radius:14px;font-weight:700;font-size:14.5px;
-    text-decoration:none;transition:filter .15s,transform .1s;
-  }
-  .btn:active{transform:scale(.98);}
-  .btn-primary{
-    background:linear-gradient(135deg,#2fc48d,#22a375);color:#04140d;
-    box-shadow:0 10px 26px -10px rgba(47,196,141,0.35);
-  }
-  .btn-primary:hover{filter:brightness(1.08);}
-  .btn-secondary{
-    background:transparent;color:#f4f5f6;border:1.4px solid #2d3136;
-  }
-  .btn-secondary:hover{border-color:#2fc48d;color:#2fc48d;}
-  footer{margin-top:34px;font-size:11.5px;color:#5a6067;}
-  footer a{color:#5a6067;}
-  .note{font-size:11.5px;color:#5a6067;margin-top:14px;line-height:1.6;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safwan Exp · Expense Ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#f7f6f1;
+      --card:#ffffff;
+      --border:#e8e5db;
+      --text:#171a1a;
+      --text2:#5c625f;
+      --text3:#96988f;
+      --accent:#1c8f63;
+      --accent2:#166f4d;
+      --accent-glow:rgba(28,143,99,0.14);
+      --accent-soft:rgba(28,143,99,0.09);
+      --chip-bg:#f8f7f2;
+      --shadow:0 10px 26px -10px rgba(20,20,15,0.18);
+      color-scheme:light;
+    }
+    html.dark{
+      --bg:#0a0b0d;
+      --card:#15171b;
+      --border:#212428;
+      --text:#f4f5f6;
+      --text2:#98a0a6;
+      --text3:#5a6067;
+      --accent:#2fc48d;
+      --accent2:#22a375;
+      --accent-glow:rgba(47,196,141,0.20);
+      --accent-soft:rgba(47,196,141,0.12);
+      --chip-bg:#15171b;
+      --shadow:0 10px 26px -10px rgba(47,196,141,0.35);
+      color-scheme:dark;
+    }
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      background-image:radial-gradient(circle at 12% 0%, var(--accent-glow), transparent 42%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      transition:background .25s, color .25s;
+    }
+    .theme-toggle{
+      position:fixed;top:20px;right:20px;
+      width:40px;height:40px;border-radius:999px;
+      border:1.4px solid var(--border);background:var(--card);color:var(--text2);
+      display:flex;align-items:center;justify-content:center;cursor:pointer;
+      transition:all .15s;
+    }
+    .theme-toggle:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+    .theme-toggle svg{width:18px;height:18px;}
+    .card{
+      max-width:460px;
+      width:100%;
+      text-align:center;
+    }
+    .logo{
+      width:64px;height:64px;border-radius:18px;
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 22px;
+      background:linear-gradient(155deg, var(--accent-soft), transparent 70%);
+      border:1.6px solid var(--accent);
+      font-size:28px;font-weight:700;color:var(--accent);
+      font-family:monospace;
+    }
+    h1{font-size:26px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
+    p.tagline{color:var(--text2);font-size:14.5px;line-height:1.6;margin-bottom:30px;}
+    .features{
+      display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:34px;
+    }
+    .chip{
+      font-size:11.5px;font-weight:600;color:var(--text2);
+      background:var(--chip-bg);border:1px solid var(--border);
+      padding:6px 12px;border-radius:999px;
+    }
+    .btn-row{display:flex;flex-direction:column;gap:12px;}
+    .btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      padding:15px;border-radius:14px;font-weight:700;font-size:14.5px;
+      text-decoration:none;transition:filter .15s,transform .1s;
+    }
+    .btn:active{transform:scale(.98);}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));color:#ffffff;
+      box-shadow:var(--shadow);
+    }
+    html.dark .btn-primary{color:#04140d;}
+    .btn-primary:hover{filter:brightness(1.08);}
+    .btn-secondary{
+      background:transparent;color:var(--text);border:1.4px solid var(--border);
+    }
+    .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+    footer{margin-top:34px;font-size:11.5px;color:var(--text3);}
+    footer a{color:var(--text3);}
+    .note{font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.6;}
+  </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">৳</div>
-    <h1>Safwan Exp</h1>
-    <p class="tagline">A simple, offline-first expense tracker and monthly budget planner. No account, no ads, no data leaves your device.</p>
+<button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
 
-    <div class="features">
-      <span class="chip">Multi-tab expenses</span>
-      <span class="chip">Monthly budget planner</span>
-      <span class="chip">Backup &amp; restore</span>
-      <span class="chip">Dark / Light theme</span>
-    </div>
+<div class="card">
+  <div class="logo">৳</div>
+  <h1>Safwan Exp</h1>
+  <p class="tagline">A simple, offline-first expense tracker and monthly budget planner. No account, no ads, no data leaves your device.</p>
 
-    <div class="btn-row">
-      <a class="btn btn-primary" href="app.html">🚀 Try Live Demo (in browser)</a>
-      <a class="btn btn-secondary" href="https://github.com/sayedmdsafwan/SafwanExp/releases/latest/download/app-debug.apk">⬇ Download Android APK</a>
-    </div>
-
-    <p class="note">The live demo runs fully in your browser — nothing is installed. For the full Android app experience (with native backup/restore to your Downloads folder), download the APK instead.</p>
-
-    <footer>
-      <a href="https://github.com/sayedmdsafwan/SafwanExp">View source on GitHub</a>
-    </footer>
+  <div class="features">
+    <span class="chip">Multi-tab expenses</span>
+    <span class="chip">Monthly budget planner</span>
+    <span class="chip">Backup &amp; restore</span>
+    <span class="chip">Dark / Light theme</span>
   </div>
+
+  <div class="btn-row">
+    <a class="btn btn-primary" href="app.html">🚀 Try Live Demo (in browser)</a>
+    <a class="btn btn-secondary" href="https://github.com/sayedmdsafwan/SafwanExp/releases/latest/download/app-debug.apk">⬇ Download Android APK</a>
+  </div>
+
+  <p class="note">The live demo runs fully in your browser — nothing is installed. For the full Android app experience (with native backup/restore to your Downloads folder), download the APK instead.</p>
+
+  <footer>
+    <a href="https://github.com/sayedmdsafwan/SafwanExp">View source on GitHub</a>
+  </footer>
+</div>
+
+<script>
+  const MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  const SUN  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+  const icon = document.getElementById('themeIcon');
+  const toggle = document.getElementById('themeToggle');
+
+  function applyTheme(){
+    const isDark = document.documentElement.classList.contains('dark');
+    icon.innerHTML = isDark ? SUN : MOON;
+  }
+
+  // Default is light mode. Only switch to dark if the user previously chose it.
+  if(localStorage.getItem('landing_theme') === 'dark'){
+    document.documentElement.classList.add('dark');
+  }
+  applyTheme();
+
+  toggle.addEventListener('click', function(){
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('landing_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    applyTheme();
+  });
+</script>
 </body>
 </html>
