@@ -2262,6 +2262,23 @@
             "outputFile": "com.safwan.exp.app-debug-24:/values_values.arsc.flat",
             "map": [
                 {
+                    "source": "F:\\Android Studio Projects\\SafwanExp\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "47",
+                        "endOffsets": "59"
+                    },
+                    "to": {
+                        "startLines": "300",
+                        "startColumns": "4",
+                        "startOffsets": "19470",
+                        "endColumns": "47",
+                        "endOffsets": "19513"
+                    }
+                },
+                {
                     "source": "C:\\Users\\Safwan HO-772.SAFWAN\\.gradle\\caches\\transforms-4\\ddbef65b4d7f267e7e72b7a8cfca43ec\\transformed\\startup-runtime-1.1.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -2298,20 +2315,20 @@
                     }
                 },
                 {
-                    "source": "F:\\Android Studio Projects\\SafwanExpWebView\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "F:\\Android Studio Projects\\SafwanExp\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
-                        "startLines": "1",
-                        "startColumns": "4",
-                        "startOffsets": "16",
-                        "endColumns": "47",
-                        "endOffsets": "59"
+                        "startLines": "2,1",
+                        "startColumns": "4,4",
+                        "startOffsets": "58,16",
+                        "endColumns": "40,41",
+                        "endOffsets": "94,53"
                     },
                     "to": {
-                        "startLines": "300",
-                        "startColumns": "4",
-                        "startOffsets": "19470",
-                        "endColumns": "47",
-                        "endOffsets": "19513"
+                        "startLines": "14,23",
+                        "startColumns": "4,4",
+                        "startOffsets": "818,1493",
+                        "endColumns": "40,41",
+                        "endOffsets": "854,1530"
                     }
                 },
                 {
@@ -2346,42 +2363,6 @@
                         "startOffsets": "17094",
                         "endColumns": "49",
                         "endOffsets": "17139"
-                    }
-                },
-                {
-                    "source": "F:\\Android Studio Projects\\SafwanExpWebView\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "1",
-                        "startColumns": "4",
-                        "startOffsets": "63",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "411"
-                    },
-                    "to": {
-                        "startLines": "1716",
-                        "startColumns": "4",
-                        "startOffsets": "113873",
-                        "endLines": "1721",
-                        "endColumns": "12",
-                        "endOffsets": "114221"
-                    }
-                },
-                {
-                    "source": "F:\\Android Studio Projects\\SafwanExpWebView\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "2,1",
-                        "startColumns": "4,4",
-                        "startOffsets": "58,16",
-                        "endColumns": "40,41",
-                        "endOffsets": "94,53"
-                    },
-                    "to": {
-                        "startLines": "14,23",
-                        "startColumns": "4,4",
-                        "startOffsets": "818,1493",
-                        "endColumns": "40,41",
-                        "endOffsets": "854,1530"
                     }
                 },
                 {
@@ -2456,6 +2437,25 @@
                         "endLines": "237,243,266,2624,2628",
                         "endColumns": "56,64,63,24,24",
                         "endOffsets": "15730,15995,17203,150533,150682"
+                    }
+                },
+                {
+                    "source": "F:\\Android Studio Projects\\SafwanExp\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "63",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "411"
+                    },
+                    "to": {
+                        "startLines": "1716",
+                        "startColumns": "4",
+                        "startOffsets": "113873",
+                        "endLines": "1721",
+                        "endColumns": "12",
+                        "endOffsets": "114221"
                     }
                 },
                 {
