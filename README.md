@@ -1,60 +1,148 @@
-# Safwan Exp — Android WebView Project
+# Safwan Exp — Expense Ledger
 
-Package name: `com.safwan.exp` (unchanged, as requested).
+A lightweight, offline-first personal expense tracker and monthly budget planner for Android, built as a native WebView application.
 
-## What was wrong (Restore bug)
+---
 
-Backup worked fine because saving just writes a `.json` file.
-Restore was broken because the native file picker was launched with a
-**strict MIME type filter** (e.g. `application/json`). Many Android file
-managers — the stock Files app, OEM file managers, file managers inside
-chat apps, etc. — tag downloaded `.json` files as `text/plain` or
-`application/octet-stream` depending on how the file was saved. When the
-picker filters strictly by `application/json`, those files show up
-greyed out / not clickable, because the file's reported MIME type
-doesn't match the filter — even though it really is your backup file.
+## Overview
 
-## The fix
+Safwan Exp helps you track day-to-day expenses across multiple budgets ("tabs") and plan a monthly budget by separating fixed and variable costs against your income. All data is stored locally on the device — nothing is sent to a server. The app also supports exporting and restoring a full backup as a single JSON file.
 
-In `app/src/main/java/com/safwan/exp/MainActivity.kt`, `openFilePicker()`
-now launches the picker with a permissive `"*/*"` MIME type (maximum
-compatibility across file managers), and the code afterward checks that
-the picked file's name actually ends in `.json` before handing it to the
-web app. So you keep the safety check, but stop good backup files from
-being invisible/unclickable in the picker.
+- **Package name:** `com.safwan.exp`
+- **Platform:** Android (native WebView wrapper around a self-contained HTML/CSS/JS app)
+- **Data storage:** Local only (`localStorage` inside the WebView) — fully offline
+- **Language:** Kotlin (native shell) + HTML/CSS/JS (app UI and logic)
 
-No changes were needed on the HTML/JS side — `assets/index.html` is the
-same app you already have. The bridge function names
-(`AndroidBridge.saveFile`, `AndroidBridge.openFilePicker`,
-`window.onAndroidSaveResult`, `window.onAndroidFileContent`) all match
-exactly what your web app already calls.
+---
 
-## How to use this
+## Features
 
-1. Unzip this project.
-2. Open Android Studio → **File → Open** → select the unzipped
-   `SafwanExpWebView` folder.
-3. Let Gradle sync (first sync will download Gradle 8.6 + AGP — needs
-   internet).
-4. Build → Generate Signed Bundle / APK (or just Run ▶ to test on a
-   device/emulator).
+### Expense Tracker
+- Create multiple independent tabs (e.g. "Main Budget", "Trip", "Business") — each with its own expense list and optional budget limit
+- Add, edit, delete, and drag-to-reorder expense entries (amount, description, date)
+- Live spent / remaining summary with a progress bar once a budget limit is set
+- Rename or delete tabs at any time
 
-If you already have your own existing Android Studio project for this
-app and just want the fix, you only need to replace ONE file:
+### Monthly Budget Planner
+- Set a monthly gross income
+- Track **Fixed Costs** (rent, subscriptions, etc.) and **Variable Costs** (shopping, groceries, etc.) separately
+- Automatic calculation of total cost and remaining balance
+- Drag-to-reorder within each cost list
 
-- `app/src/main/java/com/safwan/exp/MainActivity.kt`
+### Backup & Restore
+- One-tap **Backup** exports all data (tabs, expenses, budgets, monthly planner, theme) to a single timestamped `.json` file
+- **Restore** reads a previously exported `.json` file and replaces current data after confirmation
+- Automatic reminder if no backup has been made in 7+ days
+- On Android 10+, backups are saved via `MediaStore` (no storage permission required); Android 9 and below fall back to a direct file write with a runtime permission request
 
-Everything else in this zip (gradle files, icons, manifest, the html
-asset) is provided so you have a complete, buildable project even if
-you don't have the old one anymore.
+### UI/UX
+- Dark and light theme, togglable, remembered across sessions
+- Responsive layout — bottom navigation on mobile, sidebar navigation on wider/desktop screens
+- Native Android status bar color/icon style syncs with the in-app theme
 
-## Notes
+---
 
-- Minimum SDK: 24 (Android 7.0). Target/compile SDK: 34.
-- Saving backups uses `MediaStore` on Android 10+ (no permission
-  needed) and falls back to direct file write + a runtime permission
-  on Android 9 and below.
-- Restoring reads the picked file via `ContentResolver`, so it works
-  regardless of where the file physically lives (Downloads, Drive,
-  WhatsApp folder, etc.) as long as some app exposes it through the
-  system picker.
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Native shell | Kotlin, `WebView`, `AndroidX` |
+| App UI/logic | HTML5, CSS3, vanilla JavaScript (no frameworks) |
+| Data persistence | `localStorage` (in-app) + JSON file export/import (backup) |
+| Build system | Gradle (Groovy DSL), Android Gradle Plugin |
+| Min SDK | 24 (Android 7.0) |
+| Target / Compile SDK | 34 |
+
+---
+
+## Project Structure
+
+```
+SafwanExp/
+├── app/
+│   ├── src/main/
+│   │   ├── java/com/safwan/exp/
+│   │   │   └── MainActivity.kt        # WebView host + native bridge (backup/restore, theme)
+│   │   ├── assets/
+│   │   │   └── index.html             # The entire app UI, styling, and logic
+│   │   ├── res/
+│   │   │   ├── drawable/              # Adaptive launcher icon layers
+│   │   │   ├── mipmap-*/              # Legacy launcher icons (pre-Android 8 fallback)
+│   │   │   └── values/                # Theme, colors, strings
+│   │   └── AndroidManifest.xml
+│   ├── build.gradle                   # App module build config
+│   └── proguard-rules.pro
+├── build.gradle                       # Project-level build config
+├── settings.gradle
+├── gradle.properties
+└── gradle/wrapper/gradle-wrapper.properties
+```
+
+### How the native bridge works
+
+The web app (`assets/index.html`) talks to Android through a JavaScript interface named `AndroidBridge`, injected in `MainActivity.kt`:
+
+| JS call | Native handler | Purpose |
+|---|---|---|
+| `AndroidBridge.saveFile(base64, filename)` | `saveToDownloads()` | Writes a backup JSON file to the device's Downloads folder |
+| `AndroidBridge.openFilePicker()` | System file picker (`GetContent`) | Lets the user pick a `.json` backup file to restore |
+| `AndroidBridge.setStatusBarStyle(isDark)` | `WindowInsetsController` | Keeps the system status bar icons readable against the current theme |
+
+Results are passed back into JavaScript via `window.onAndroidSaveResult(...)` and `window.onAndroidFileContent(...)`.
+
+---
+
+## Getting Started
+
+### Prerequisites
+- [Android Studio](https://developer.android.com/studio) (recent stable version)
+- JDK 8 or newer (bundled with Android Studio)
+- An internet connection for the first Gradle sync (downloads the Gradle distribution and dependencies)
+
+### Build & Run
+1. Clone or download this repository
+2. Open Android Studio → **File → Open** → select the project folder
+3. Wait for Gradle sync to finish
+4. Connect a device or start an emulator, then press **Run ▶**
+
+### Build a release APK
+**Build → Build Bundle(s) / APK(s) → Build APK(s)**, then locate the output via the notification that appears (typically `app/build/outputs/apk/debug/app-debug.apk` for a debug build).
+
+---
+
+## Backup File Format
+
+A backup is a single `.json` file with the following shape:
+
+```json
+{
+  "app": "Safwan Exp - Expense Tracker",
+  "version": "2.0",
+  "schema": 1,
+  "createdAt": "ISO timestamp",
+  "deviceTimestamp": 0,
+  "data": {
+    "appData": {
+      "tabs": [ { "name": "...", "budget": "...", "items": [ /* expenses */ ] } ],
+      "active": 0,
+      "monthly": { "income": "...", "fixed": [ /* ... */ ], "variable": [ /* ... */ ] }
+    },
+    "theme": "dark",
+    "meta": { "firstUse": "...", "lastBackup": "..." }
+  }
+}
+```
+
+Restoring validates this structure before applying it, and always asks for confirmation before overwriting existing data.
+
+---
+
+## Privacy
+
+Safwan Exp does not collect, transmit, or store any data outside the user's own device. There is no analytics, no network calls, and no third-party services involved — all functionality works fully offline.
+
+---
+
+## License
+
+This project is currently unlicensed / private. Add a license of your choice (e.g. MIT) if you plan to share or open-source it.
