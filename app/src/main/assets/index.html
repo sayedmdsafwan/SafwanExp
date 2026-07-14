@@ -1735,8 +1735,9 @@
   }
 
   (function(){
-    const stored = localStorage.getItem("xpns_theme");
-    if(stored === "light") document.documentElement.classList.add("light");
+    // App always opens in light mode by default.
+    // User can still switch to dark using the toggle — it just won't be remembered on next open.
+    document.documentElement.classList.add("light");
     applyTheme();
   })();
 
