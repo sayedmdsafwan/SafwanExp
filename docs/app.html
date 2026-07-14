@@ -1760,5 +1760,38 @@
   updateClearLabels();
   setTimeout(checkBackupReminder, 600);
 </script>
+<style>
+  .demo-download-badge{
+    position:fixed;
+    z-index:9997;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:calc(var(--nav-h) + 20px);
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#04140d;
+    font-family:var(--font);
+    font-weight:800;
+    font-size:12.5px;
+    padding:11px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 10px 24px -8px var(--accent-glow);
+    display:flex;align-items:center;gap:6px;
+    white-space:nowrap;
+    transition:filter .15s, transform .1s;
+  }
+  html.light .demo-download-badge{ color:#ffffff; }
+  .demo-download-badge:hover{ filter:brightness(1.08); }
+  .demo-download-badge:active{ transform:translateX(-50%) scale(.97); }
+  @media(min-width:601px){
+    .demo-download-badge{ bottom:24px; }
+  }
+</style>
+
+<a class="demo-download-badge"
+   href="https://github.com/sayedmdsafwan/SafwanExp/releases/latest/download/app-debug.apk"
+   target="_blank" rel="noopener">
+  ⬇ Get the Android App
+</a>
 </body>
 </html>
