@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#2fc48d</color>
+    <color name="bg_dark">#0a0b0d</color>
+    <string name="app_name">Safwan Exp</string>
+    <style name="Theme.SafwanExp" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+        <item name="colorPrimary">@color/accent</item>
+    </style>
+</resources>

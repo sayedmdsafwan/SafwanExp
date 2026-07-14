@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- gold coin accent (behind the receipt) -->
+    <path
+        android:fillColor="#dea746"
+        android:fillAlpha="0.95"
+        android:pathData="M83,74 A9,9 0 1,1 65,74 A9,9 0 1,1 83,74 Z"/>
+
+    <!-- green receipt (matches the app's own icon style) -->
+    <group
+        android:translateX="24"
+        android:translateY="24"
+        android:scaleX="2.5"
+        android:scaleY="2.5">
+        <path
+            android:pathData="M7,3h10a1,1 0 0,1 1,1v17l-3,-2 -2,2 -2,-2 -2,2 -3,-2V4a1,1 0 0,1 1,-1z"
+            android:strokeColor="#2fc48d"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:fillColor="#00000000"/>
+        <path
+            android:pathData="M9,8L15,8"
+            android:strokeColor="#2fc48d"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round"/>
+        <path
+            android:pathData="M9,12L15,12"
+            android:strokeColor="#2fc48d"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round"/>
+    </group>
+</vector>

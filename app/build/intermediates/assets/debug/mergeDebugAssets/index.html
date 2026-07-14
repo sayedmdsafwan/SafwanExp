@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'none';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0b0d" id="themeColorMeta">
+  <meta name="color-scheme" content="dark light">
+  <title>Safwan Exp · Expense Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    :root{
+      --bg:#0a0b0d;
+      --surface:#101215;
+      --card:#15171b;
+      --card2:#1b1e22;
+      --border:#212428;
+      --border2:#2d3136;
+      --text:#f4f5f6;
+      --text2:#98a0a6;
+      --text3:#5a6067;
+      --accent:#2fc48d;
+      --accent2:#22a375;
+      --accent-glow:rgba(47,196,141,0.20);
+      --accent-soft:rgba(47,196,141,0.12);
+      --gold:#dea746;
+      --gold-soft:rgba(222,167,70,0.12);
+      --green:#2fc48d;
+      --green-soft:rgba(47,196,141,0.12);
+      --red:#f0566a;
+      --red-soft:rgba(240,86,106,0.12);
+      --yellow:#dea746;
+      --yellow-soft:rgba(222,167,70,0.12);
+      --shadow-1:0 1px 2px rgba(0,0,0,0.3);
+      --shadow-2:0 12px 32px -8px rgba(0,0,0,0.45);
+      --shadow-3:0 24px 60px -16px rgba(0,0,0,0.55);
+      --radius:18px;
+      --radius-sm:12px;
+      --radius-xs:9px;
+      --font:'Inter',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+      --nav-h:70px;
+      --topbar-h:60px;
+      color-scheme:dark;
+    }
+    html.light{
+      --bg:#f7f6f1;
+      --surface:#efede6;
+      --card:#ffffff;
+      --card2:#f8f7f2;
+      --border:#e8e5db;
+      --border2:#d9d5c7;
+      --text:#171a1a;
+      --text2:#5c625f;
+      --text3:#96988f;
+      --accent:#1c8f63;
+      --accent2:#166f4d;
+      --accent-glow:rgba(28,143,99,0.14);
+      --accent-soft:rgba(28,143,99,0.09);
+      --gold:#9c6c18;
+      --gold-soft:rgba(156,108,24,0.09);
+      --green:#1c8f63;
+      --green-soft:rgba(28,143,99,0.09);
+      --red:#c22f47;
+      --red-soft:rgba(194,47,71,0.08);
+      --yellow:#9c6c18;
+      --yellow-soft:rgba(156,108,24,0.09);
+      --shadow-1:0 1px 2px rgba(20,20,15,0.05);
+      --shadow-2:0 16px 34px -12px rgba(20,20,15,0.12);
+      --shadow-3:0 26px 60px -16px rgba(20,20,15,0.16);
+      color-scheme:light;
+    }
+    html,body{
+      font-family:var(--font);
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;width:100%;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    body{
+      background-image:radial-gradient(circle at 12% 0%, var(--accent-glow), transparent 42%);
+      background-repeat:no-repeat;
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{animation-duration:0.001ms!important;animation-iteration-count:1!important;transition-duration:0.001ms!important;}
+    }
+    ::selection{background:var(--accent-soft);color:var(--text);}
+    ::-webkit-scrollbar{width:5px;height:5px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+
+    /* ═══ LAYOUT ═══ */
+    .app-shell{display:flex;flex-direction:column;min-height:100vh;max-width:600px;margin:0 auto;position:relative;}
+    .content-area{
+      flex:1;overflow-y:auto;
+      padding-top:calc(var(--topbar-h) + env(safe-area-inset-top));
+      padding-bottom:calc(var(--nav-h) + 28px);
+    }
+
+    /* ═══ RECEIPT PERFORATION (signature motif) ═══ */
+    .perf{
+      height:9px;flex-shrink:0;
+      background-image:radial-gradient(circle, var(--bg) 2.3px, transparent 2.4px);
+      background-size:13px 13px;background-position:6.5px center;
+      border-bottom:1px dashed var(--border2);
+      opacity:.75;
+    }
+    html.light .perf{opacity:.9;}
+
+    /* ═══ TOP BAR ═══ */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 16px;padding-top:env(safe-area-inset-top);
+      height:calc(var(--topbar-h) + env(safe-area-inset-top));
+      position:fixed;top:0;left:0;right:0;z-index:300;
+      background:color-mix(in srgb, var(--bg) 88%, transparent);
+      -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
+    .logo-mark{
+      width:32px;height:32px;flex-shrink:0;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;position:relative;
+      background:linear-gradient(155deg, var(--accent-soft), transparent 70%);
+      border:1.4px solid var(--accent);
+      font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);
+    }
+    .logo-mark::after{
+      content:'';position:absolute;inset:-1.4px;border-radius:11px;
+      background:conic-gradient(from 120deg, var(--accent), transparent 30%, transparent 70%, var(--accent));
+      z-index:-1;opacity:.55;
+    }
+    .logo-copy{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+    .logo-name{font-size:14.5px;font-weight:800;letter-spacing:-0.3px;white-space:nowrap;}
+    .logo-sub{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);white-space:nowrap;}
+    .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+
+    .clear-btn{
+      background:transparent;border:1px solid var(--border2);color:var(--text2);
+      padding:7px 12px;border-radius:999px;cursor:pointer;
+      font-size:11.5px;font-family:var(--font);font-weight:700;
+      transition:all .16s;display:flex;align-items:center;gap:6px;white-space:nowrap;
+    }
+    .clear-btn:hover,.clear-btn:active{border-color:var(--yellow);color:var(--yellow);background:var(--yellow-soft);}
+    .clear-btn svg{width:13px;height:13px;flex-shrink:0;}
+
+    .menu-btn{
+      background:transparent;border:1px solid var(--border2);color:var(--text2);
+      width:34px;height:34px;border-radius:999px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      transition:all .16s;position:relative;
+    }
+    .menu-btn:hover,.menu-btn:active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+    .menu-btn svg{width:16px;height:16px;}
+
+    .dropdown-wrap{position:relative;}
+    .dropdown-menu{
+      position:absolute;top:calc(100% + 10px);right:0;
+      background:var(--card);border:1px solid var(--border2);
+      border-radius:var(--radius-sm);box-shadow:var(--shadow-3);
+      z-index:9999;min-width:196px;overflow:hidden;display:none;
+      animation:dropIn .18s cubic-bezier(.2,.9,.3,1);
+    }
+    .dropdown-menu.open{display:block;}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-8px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+    .drop-item{
+      display:flex;align-items:center;gap:11px;padding:12px 14px;cursor:pointer;
+      font-size:13px;font-weight:600;color:var(--text2);
+      transition:background .12s,color .12s;
+    }
+    .drop-item:hover,.drop-item:active{background:var(--card2);color:var(--text);}
+    .drop-item.danger:hover,.drop-item.danger:active{color:var(--red);background:var(--red-soft);}
+    .drop-item svg{width:15px;height:15px;flex-shrink:0;}
+    .drop-divider{height:1px;background:var(--border);margin:4px 0;}
+
+    /* ═══ BOTTOM NAV ═══ */
+    .bottom-nav{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:600px;height:auto;min-height:var(--nav-h);
+      background:color-mix(in srgb, var(--bg) 90%, transparent);
+      -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+      border-top:1px solid var(--border);
+      display:flex;align-items:stretch;z-index:200;padding:8px 12px;
+      padding-bottom:calc(8px + env(safe-area-inset-bottom));
+      gap:6px;
+    }
+    .nav-item{
+      flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+      cursor:pointer;color:var(--text3);border-radius:var(--radius-sm);
+      font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+      transition:color .18s,background .18s;position:relative;
+      padding:8px 4px;white-space:nowrap;
+    }
+    .nav-item.active{color:var(--accent);background:var(--accent-soft);}
+    .nav-item svg{width:20px;height:20px;flex-shrink:0;transition:transform .2s;}
+    .nav-item.active svg{transform:translateY(-1px);}
+    @media(max-width:360px){
+      .bottom-nav{padding:6px 8px;padding-bottom:calc(6px + env(safe-area-inset-bottom));gap:4px;}
+      .nav-item{padding:7px 2px;font-size:9px;letter-spacing:.2px;}
+      .nav-item svg{width:18px;height:18px;}
+    }
+
+    /* ═══ PAGES ═══ */
+    .page{display:none;animation:fadeUp .28s cubic-bezier(.2,.8,.3,1);}
+    .page.active{display:block;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+    /* ═══ TABS ═══ */
+    .tab-row{
+      display:flex;align-items:center;gap:22px;
+      overflow-x:auto;scrollbar-width:none;
+      padding:20px 18px 0;border-bottom:1px solid var(--border);
+    }
+    .tab-row::-webkit-scrollbar{display:none;}
+    .tab-chip{
+      background:transparent;border:none;color:var(--text3);
+      padding:0 0 12px;font-size:13px;font-weight:700;cursor:pointer;
+      white-space:nowrap;transition:color .15s;flex-shrink:0;position:relative;
+    }
+    .tab-chip::after{
+      content:'';position:absolute;left:0;right:0;bottom:-1px;height:2.5px;border-radius:2px;
+      background:transparent;transition:background .15s;
+    }
+    .tab-chip:hover{color:var(--text2);}
+    .tab-chip.active{color:var(--text);}
+    .tab-chip.active::after{background:var(--accent);box-shadow:0 0 10px var(--accent-glow);}
+    .tab-actions{display:flex;gap:4px;padding:9px 14px 0;flex-wrap:wrap;}
+    .tab-act-btn{
+      background:transparent;border:none;color:var(--text3);
+      padding:6px 9px;border-radius:var(--radius-xs);
+      font-size:11.5px;font-weight:700;font-family:var(--font);cursor:pointer;
+      transition:all .15s;display:flex;align-items:center;gap:5px;
+    }
+    .tab-act-btn:hover{background:var(--accent-soft);color:var(--accent);}
+    .tab-act-btn.del:hover{background:var(--red-soft);color:var(--red);}
+
+    /* ═══ OVERVIEW CARD ═══ */
+    .overview-card{
+      margin:18px 16px 0;background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:19px;box-shadow:var(--shadow-1);
+    }
+    .overview-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px;}
+    .overview-label{font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px;}
+    .overview-label svg{width:12px;height:12px;}
+    .budget-field{display:flex;align-items:center;gap:4px;border-bottom:1.5px solid var(--border2);padding:2px 0;transition:border-color .15s;max-width:150px;}
+    .budget-field:focus-within{border-color:var(--accent);}
+    .budget-field-prefix{font-family:var(--mono);font-size:12px;color:var(--text3);flex-shrink:0;}
+    .budget-field-input{background:transparent;border:none;outline:none;font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--text);width:100%;text-align:right;}
+    .budget-field-input::placeholder{color:var(--text3);font-weight:500;}
+
+    .overview-figures{display:flex;align-items:center;gap:18px;}
+    .overview-figure{flex:1;min-width:0;}
+    .overview-figure-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+    .overview-figure-val{font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:-.6px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .overview-figure-val.green{color:var(--green);}
+    .overview-figure-val.red{color:var(--red);}
+    .overview-figure-val.accent{color:var(--accent);}
+    .overview-divider{width:1px;align-self:stretch;background:var(--border);}
+
+    .progress-track{margin-top:17px;height:7px;border-radius:6px;background:var(--card2);overflow:hidden;position:relative;}
+    .progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg, var(--accent2), var(--accent));transition:width .4s cubic-bezier(.2,.8,.3,1);position:relative;overflow:hidden;}
+    .progress-fill.over{background:linear-gradient(90deg,#c93a4d,var(--red));}
+    .progress-fill::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.28) 46%, transparent 62%);
+      background-size:220% 100%;animation:shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine{0%{background-position:140% 0;}100%{background-position:-40% 0;}}
+    .progress-meta{display:flex;justify-content:flex-end;margin-top:6px;font-size:10.5px;font-weight:700;color:var(--text3);font-family:var(--mono);}
+
+    /* ═══ ADD FORM ═══ */
+    .add-form-card{margin:18px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow-1);}
+    .form-title{font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+    .form-title svg{width:12px;height:12px;}
+    .form-row{display:grid;grid-template-columns:118px 1fr;gap:9px;margin-bottom:11px;}
+    @media(max-width:380px){.form-row{grid-template-columns:1fr;}}
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;}
+    .field input{
+      background:var(--card2);border:1.4px solid var(--border);border-radius:var(--radius-sm);
+      padding:10px 12px;font-size:13.5px;font-weight:500;font-family:var(--font);
+      color:var(--text);outline:none;transition:border-color .15s,background .15s,box-shadow .15s;width:100%;
+    }
+    .field input:focus{border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px var(--accent-soft);}
+    .field input::placeholder{color:var(--text3);}
+    .add-btn{
+      width:100%;padding:12.5px;border:none;border-radius:var(--radius-sm);
+      background:linear-gradient(135deg, var(--accent), var(--accent2));color:#04140d;
+      font-family:var(--font);font-size:13.5px;font-weight:800;cursor:pointer;letter-spacing:.1px;
+      transition:filter .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:7px;
+      box-shadow:0 8px 20px -8px var(--accent-glow);
+    }
+    html.light .add-btn{color:#ffffff;}
+    .add-btn:hover{filter:brightness(1.08);}
+    .add-btn:active{transform:scale(.98);}
+    .add-btn svg{width:14px;height:14px;}
+
+    /* ═══ LIST CARD ═══ */
+    .list-card{margin:18px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-1);}
+    .list-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;}
+    .list-title{font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px;}
+    .list-title svg{width:12px;height:12px;}
+    .count-badge{background:var(--accent-soft);color:var(--accent);border:none;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:999px;font-family:var(--mono);}
+
+    /* ═══ LIST ROW ═══ */
+    .list-row{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border-top:1px solid var(--border);transition:background .12s;cursor:default;}
+    .list-row:hover{background:var(--card2);}
+    .list-row.dragging{opacity:.4;cursor:grabbing;}
+    .list-row.drag-over{border-top:2px solid var(--accent);margin-top:-1px;}
+
+    .list-row-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+    .list-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .list-row-index{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text3);margin-right:6px;}
+    .list-row-title{font-size:13.5px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;}
+    .list-row-amount{font-family:var(--mono);font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;flex-shrink:0;}
+    .list-row-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .list-row-bottom.list-row-bottom-end{justify-content:flex-end;}
+    .list-row-date{font-family:var(--mono);font-size:10.5px;color:var(--text3);background:var(--card2);padding:2px 8px;border-radius:999px;}
+    .list-row-actions{display:flex;gap:6px;}
+
+    .icon-btn{
+      background:transparent;border:1.4px solid var(--border2);color:var(--text2);
+      border-radius:999px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:all .15s;flex-shrink:0;
+    }
+    .icon-btn svg{width:12.5px;height:12.5px;}
+    .icon-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+    .icon-btn.del:hover{border-color:var(--red);color:var(--red);background:var(--red-soft);}
+
+    .empty-state{padding:46px 20px;text-align:center;color:var(--text2);}
+    .empty-icon{margin-bottom:12px;color:var(--text3);opacity:.6;display:flex;justify-content:center;}
+    .empty-icon svg{width:34px;height:34px;}
+    .empty-text{font-size:13px;line-height:1.65;color:var(--text3);}
+
+    /* ═══ MONTHLY BUDGET PAGE ═══ */
+    .income-hero{
+      margin:18px 16px 0;background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:21px;position:relative;overflow:hidden;box-shadow:var(--shadow-1);
+    }
+    .income-hero::before{
+      content:'';position:absolute;top:-40%;right:-15%;width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, var(--accent-glow), transparent 70%);pointer-events:none;
+    }
+    .income-tag{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;position:relative;}
+    .income-input-row{display:flex;align-items:baseline;gap:9px;position:relative;}
+    .income-sym{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);flex-shrink:0;}
+    .income-input{
+      background:transparent;border:none;outline:none;width:100%;
+      font-family:var(--mono);font-size:27px;font-weight:700;color:var(--text);letter-spacing:-.6px;
+    }
+    .income-input::placeholder{color:var(--text3);}
+
+    html.light .count-badge{color:var(--accent);}
+
+    /* ═══ BUDGET SUMMARY BAR ═══ */
+    .budget-summary{
+      display:flex;justify-content:space-between;gap:8px;margin:12px 16px 0;
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;box-shadow:var(--shadow-1);
+    }
+    .budget-summary-item{flex:1;text-align:center;}
+    .budget-summary-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;font-weight:700;}
+    .budget-summary-val{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--text);}
+    .budget-summary-val.red{color:var(--red);}
+    .budget-summary-val.green{color:var(--green);}
+    .budget-summary-divider{width:1px;background:var(--border);margin:2px 0;}
+    @media(min-width:601px){.budget-summary{margin-left:24px;margin-right:24px;}}
+
+    /* ═══ COST SECTIONS ═══ */
+    .cost-section{margin:22px 16px 0;}
+    .cost-section-title{
+      font-size:10.5px;font-weight:800;color:var(--text3);text-transform:uppercase;
+      letter-spacing:.8px;margin-bottom:11px;display:flex;align-items:center;gap:7px;
+    }
+    .cost-section-title .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .cost-section-title.variable .dot{background:var(--accent);box-shadow:0 0 8px var(--accent-glow);}
+    .cost-section-title.fixed .dot{background:var(--gold);box-shadow:0 0 8px var(--gold-soft);}
+    .cost-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .cost-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;box-shadow:var(--shadow-1);}
+
+    /* ═══ DESKTOP LAYOUT (601px+) ═══ */
+    @media(min-width:601px){
+      .app-shell{max-width:100%;flex-direction:row;height:100vh;margin:0;}
+      .sidebar{
+        width:256px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);
+        display:flex;flex-direction:column;padding:24px 14px;height:100vh;
+        position:sticky;top:0;overflow-y:auto;
+      }
+      .sidebar-logo{display:flex;align-items:center;gap:11px;margin-bottom:28px;padding:0 6px;}
+      .sidebar-logo .logo-mark{width:34px;height:34px;font-size:15px;}
+      .sidebar-logo-name{font-size:15px;font-weight:800;letter-spacing:-.3px;line-height:1.3;}
+      .sidebar-logo-sub{font-size:9.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);}
+      .sidebar-nav{flex:1;}
+      .sidebar-nav-item{
+        display:flex;align-items:center;gap:11px;padding:10.5px 12px;border-radius:var(--radius-sm);
+        cursor:pointer;color:var(--text2);font-size:13px;font-weight:700;
+        margin-bottom:3px;transition:all .15s;
+      }
+      .sidebar-nav-item svg{width:17px;height:17px;flex-shrink:0;}
+      .sidebar-nav-item:hover{background:var(--card);color:var(--text);}
+      .sidebar-nav-item.active{background:var(--accent-soft);color:var(--accent);}
+      .sidebar-actions{display:flex;flex-direction:column;gap:5px;margin-top:auto;padding-top:16px;border-top:1px solid var(--border);}
+      .sidebar-btn{
+        background:transparent;border:1px solid transparent;color:var(--text2);
+        padding:9.5px 12px;border-radius:var(--radius-sm);cursor:pointer;
+        font-size:12.5px;font-weight:600;font-family:var(--font);
+        transition:all .15s;display:flex;align-items:center;gap:9px;text-align:left;width:100%;
+      }
+      .sidebar-btn:hover{background:var(--card);border-color:var(--border);color:var(--text);}
+      .sidebar-btn.danger:hover{border-color:var(--red);color:var(--red);background:var(--red-soft);}
+      .sidebar-btn svg{width:14px;height:14px;flex-shrink:0;}
+      .desktop-main{flex:1;overflow-y:auto;height:100vh;min-width:0;}
+      .bottom-nav{display:none!important;}
+      .topbar{display:none;}
+      .content-area{padding-bottom:24px;padding-top:24px;}
+      .tab-row{padding:0 24px 0;}
+      .tab-actions{padding:10px 24px 0;}
+      .overview-card,.add-form-card,.list-card{margin-left:24px;margin-right:24px;}
+      .cost-section,.income-hero{margin-left:24px;margin-right:24px;}
+    }
+    @media(max-width:600px){
+      .sidebar{display:none!important;}
+      .desktop-main{width:100%;}
+    }
+
+    /* ═══ TOAST ═══ */
+    .toast{
+      position:fixed;bottom:calc(var(--nav-h) + 16px);left:50%;
+      transform:translateX(-50%) translateY(20px);
+      background:var(--card);border:1px solid var(--border2);color:var(--text);
+      padding:11px 18px;border-radius:999px;font-size:12.5px;font-weight:700;
+      box-shadow:var(--shadow-3);z-index:9999;opacity:0;
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .22s;
+      white-space:nowrap;pointer-events:none;max-width:90vw;
+      overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px;
+    }
+    .toast::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+    @media(min-width:601px){.toast{bottom:24px;}}
+
+    /* ═══ MODAL ═══ */
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(4,5,7,0.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+      display:flex;align-items:flex-end;justify-content:center;
+      z-index:9998;opacity:0;pointer-events:none;transition:opacity .22s;
+    }
+    @media(min-width:601px){
+      .modal-overlay{align-items:center;}
+      .modal{border-radius:var(--radius)!important;max-width:380px!important;margin-bottom:0!important;}
+    }
+    .modal-overlay.show{opacity:1;pointer-events:all;}
+    .modal{
+      background:var(--card);border:1px solid var(--border);border-bottom:none;
+      border-radius:var(--radius) var(--radius) 0 0;padding:8px 0 0;
+      width:100%;max-width:600px;box-shadow:0 -20px 60px rgba(0,0,0,0.4);
+      transform:translateY(30px);transition:transform .28s cubic-bezier(.34,1.2,.64,1);
+    }
+    .modal-overlay.show .modal{transform:translateY(0);}
+    .modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 16px;}
+    .modal-inner{padding:0 20px 28px;}
+    .modal-title{font-size:16.5px;font-weight:800;margin-bottom:6px;letter-spacing:-.2px;}
+    .modal-msg{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6;}
+    .modal-input{
+      width:100%;background:var(--card2);border:1.4px solid var(--border);
+      border-radius:var(--radius-sm);padding:11px 13px;font-size:14px;font-family:var(--font);
+      color:var(--text);outline:none;margin-bottom:10px;transition:border-color .15s,box-shadow .15s;
+    }
+    .modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+    #editForm{display:none;}
+    #editForm label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;display:block;margin-top:10px;}
+    .modal-btns{display:flex;gap:8px;margin-top:18px;}
+    .modal-btn{
+      flex:1;padding:12px;border-radius:var(--radius-sm);border:1.4px solid var(--border);
+      font-size:13.5px;font-weight:700;font-family:var(--font);cursor:pointer;
+      background:transparent;color:var(--text);transition:all .15s;
+    }
+    .modal-btn:hover{background:var(--card2);}
+    .modal-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04140d;border-color:transparent;}
+    html.light .modal-btn.primary{color:#fff;}
+    .modal-btn.primary:hover{filter:brightness(1.08);}
+    .modal-btn.danger-btn{border-color:var(--red);color:var(--red);background:transparent;}
+    .modal-btn.danger-btn:hover{background:var(--red-soft);}
+
+    /* ═══ DRAG HANDLE ═══ */
+    .drag-handle{display:flex;align-items:center;justify-content:center;width:18px;margin-top:2px;flex-shrink:0;color:var(--border2);cursor:grab;touch-action:none;transition:color .15s;}
+    .drag-handle:hover{color:var(--text3);}
+    .drag-handle:active{cursor:grabbing;color:var(--text2);}
+    .drag-handle svg{width:14px;height:14px;}
+  </style>
+</head>
+<body>
+<input type="file" id="fileInput" accept=".json" style="display:none;">
+
+<div class="app-shell">
+
+  <!-- ═══ SIDEBAR (desktop only) ═══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">৳</div>
+      <div>
+        <div class="sidebar-logo-name">Safwan Exp</div>
+        <div class="sidebar-logo-sub">Expense Ledger</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-item active" id="snav-main" onclick="switchPage('main')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Expense Tracker
+      </div>
+      <div class="sidebar-nav-item" id="snav-budget" onclick="switchPage('budget')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Monthly Budget
+      </div>
+    </nav>
+    <div class="sidebar-actions">
+      <button class="sidebar-btn" id="exportBtn2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Backup
+      </button>
+      <button class="sidebar-btn" id="importBtn2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Restore
+      </button>
+      <button class="sidebar-btn" id="themeBtn2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span id="themeLabelDesk">Light Mode</span>
+      </button>
+      <button class="sidebar-btn" id="clearBtn2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        <span id="clearLabel2">Clear Tab</span>
+      </button>
+      <button class="sidebar-btn danger" id="resetBtn2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        Reset All Data
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="desktop-main">
+
+    <!-- TOP BAR (mobile only) -->
+    <div class="topbar">
+      <div class="topbar-logo">
+        <div class="logo-mark">৳</div>
+        <div class="logo-copy">
+          <span class="logo-name">Safwan Exp</span>
+          <span class="logo-sub">Expense Ledger</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="clear-btn" id="clearBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          <span id="clearLabel">Clear</span>
+        </button>
+        <div class="dropdown-wrap">
+          <button class="menu-btn" id="menuBtn" onclick="toggleDropdown()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+          </button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="drop-item" id="exportDropBtn" onclick="closeDropdown();doBackup();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Backup
+            </div>
+            <div class="drop-item" id="importDropBtn" onclick="closeDropdown();doRestore();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Restore
+            </div>
+            <div class="drop-divider"></div>
+            <div class="drop-item" id="themeDropBtn" onclick="closeDropdown();toggleTheme();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <span id="themeDropLabel">Light Mode</span>
+            </div>
+            <div class="drop-divider"></div>
+            <div class="drop-item danger" id="resetDropBtn" onclick="closeDropdown();doResetAll();">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              Reset All Data
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ══ PAGE: MAIN ══ -->
+      <div class="page active" id="page-main">
+
+        <div class="tab-row" id="tabs"></div>
+        <div class="tab-actions">
+          <button class="tab-act-btn" id="addTabBtn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Tab
+          </button>
+          <button class="tab-act-btn" id="renameTabBtn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Rename
+          </button>
+          <button class="tab-act-btn del" id="deleteTabBtn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            Delete
+          </button>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-head">
+            <span class="overview-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/></svg>
+              Overview
+            </span>
+            <div class="budget-field">
+              <span class="budget-field-prefix">৳</span>
+              <input class="budget-field-input" type="number" id="budget" placeholder="Set budget limit" inputmode="decimal" min="0">
+            </div>
+          </div>
+          <div id="stats"></div>
+        </div>
+
+        <div class="add-form-card">
+          <div class="form-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Expense
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label>Amount ৳</label>
+              <input id="amount" type="number" placeholder="0.00" inputmode="decimal" min="0">
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <input id="reason" type="text" placeholder="e.g. Grocery, Transport..." maxlength="200">
+            </div>
+          </div>
+          <div class="form-row" style="grid-template-columns:1fr;">
+            <div class="field">
+              <label>Date</label>
+              <input id="expense-date" type="date">
+            </div>
+          </div>
+          <button class="add-btn" id="addExpenseBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Expense
+          </button>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <div class="list-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 3h10a1 1 0 011 1v17l-3-2-2 2-2-2-2 2-3-2V4a1 1 0 011-1z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+              Transactions
+            </div>
+            <div class="count-badge" id="entry-count">0</div>
+          </div>
+          <div class="perf"></div>
+          <div id="list"></div>
+        </div>
+
+        <div style="height:8px;"></div>
+      </div>
+
+      <!-- ══ PAGE: BUDGET ══ -->
+      <div class="page" id="page-budget">
+
+        <div class="income-hero">
+          <div class="income-tag">Monthly Gross Income</div>
+          <div class="income-input-row">
+            <span class="income-sym">৳</span>
+            <input class="income-input" type="number" id="monthly-income" placeholder="0" inputmode="decimal" min="0">
+          </div>
+        </div>
+
+        <div class="budget-summary" id="budget-summary"></div>
+
+        <div class="cost-section">
+          <div class="cost-section-title variable"><span class="dot"></span>Variable Costs</div>
+          <div class="add-form-card" style="margin:0 0 10px;">
+            <div class="form-row">
+              <div class="field">
+                <label>Amount ৳</label>
+                <input id="var-amount" type="number" placeholder="0.00" inputmode="decimal" min="0">
+              </div>
+              <div class="field">
+                <label>Reason</label>
+                <input id="var-reason" type="text" placeholder="e.g. Shopping..." maxlength="200">
+              </div>
+            </div>
+            <button class="add-btn" id="addVarBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Variable Cost
+            </button>
+          </div>
+          <div class="cost-list">
+            <div class="perf"></div>
+            <div id="var-list"></div>
+          </div>
+        </div>
+
+        <div class="cost-section">
+          <div class="cost-section-title fixed"><span class="dot"></span>Fixed Costs</div>
+          <div class="add-form-card" style="margin:0 0 10px;">
+            <div class="form-row">
+              <div class="field">
+                <label>Amount ৳</label>
+                <input id="fixed-amount" type="number" placeholder="0.00" inputmode="decimal" min="0">
+              </div>
+              <div class="field">
+                <label>Item Name</label>
+                <input id="fixed-reason" type="text" placeholder="e.g. House Rent..." maxlength="200">
+              </div>
+            </div>
+            <button class="add-btn" id="addFixedBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Fixed Cost
+            </button>
+          </div>
+          <div class="cost-list">
+            <div class="perf"></div>
+            <div id="fixed-list"></div>
+          </div>
+        </div>
+
+        <div style="height:8px;"></div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /desktop-main -->
+</div><!-- /app-shell -->
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-main" onclick="switchPage('main')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+    Tracker
+  </div>
+  <div class="nav-item" id="nav-budget" onclick="switchPage('budget')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    Budget
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-inner">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-msg" id="modalMsg"></div>
+      <input class="modal-input" id="modalInput" type="text" style="display:none;" maxlength="60">
+      <div id="editForm">
+        <label>Amount</label>
+        <input class="modal-input" id="editAmount" type="number" inputmode="decimal" min="0">
+        <label>Reason / Item Name</label>
+        <input class="modal-input" id="editReason" type="text" maxlength="200">
+        <div id="editDateWrap" style="display:none;">
+          <label>Date</label>
+          <input class="modal-input" id="editDate" type="date">
+        </div>
+      </div>
+      <div class="modal-btns" id="modalBtns"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ═══════════════════════════════
+     DATA
+  ═══════════════════════════════ */
+  let appData = (function(){
+    try{ return JSON.parse(localStorage.getItem("xpns_app")); }catch(e){ return null; }
+  })();
+  if(!appData || typeof appData !== 'object'){
+    appData = {
+      tabs: [{name:"Main Budget", budget:"", items:[]}],
+      active: 0,
+      monthly: { income: "", fixed: [], variable: [] }
+    };
+  }
+  if(!Array.isArray(appData.tabs) || appData.tabs.length === 0){
+    appData.tabs = [{name:"Main Budget", budget:"", items:[]}];
+  }
+  if(typeof appData.active !== 'number' || appData.active < 0 || appData.active >= appData.tabs.length){
+    appData.active = 0;
+  }
+  appData.tabs.forEach(function(t){
+    if(!Array.isArray(t.items)) t.items = [];
+    if(t.budget === undefined || t.budget === null) t.budget = "";
+    if(!t.name) t.name = "Tab";
+  });
+  if(!appData.monthly || typeof appData.monthly !== 'object'){
+    appData.monthly = { income: "", fixed: [], variable: [] };
+  }
+  if(!Array.isArray(appData.monthly.fixed)) appData.monthly.fixed = [];
+  if(!Array.isArray(appData.monthly.variable)) appData.monthly.variable = [];
+  if(appData.monthly.income === undefined || appData.monthly.income === null) appData.monthly.income = "";
+  appData.monthly.variable.forEach(function(v){ if(v.done === undefined) v.done = false; });
+
+  function save(){ try{ localStorage.setItem("xpns_app", JSON.stringify(appData)); }catch(e){} }
+  function currentTab(){ return appData.tabs[appData.active]; }
+
+  /* ═══════════════════════════════
+     PAGE SWITCH
+  ═══════════════════════════════ */
+  let currentPage = 'main';
+  function switchPage(p){
+    currentPage = p;
+    document.querySelectorAll('.page').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.sidebar-nav-item').forEach(function(x){ x.classList.remove('active'); });
+    document.getElementById('page-'+p).classList.add('active');
+    const nav = document.getElementById('nav-'+p);
+    if(nav) nav.classList.add('active');
+    const snav = document.getElementById('snav-'+p);
+    if(snav) snav.classList.add('active');
+    updateClearLabels();
+    render();
+  }
+
+  /* ═══════════════════════════════
+     ANDROID DETECTION
+  ═══════════════════════════════ */
+  const isAndroid = (typeof AndroidBridge !== 'undefined');
+
+  /* ═══════════════════════════════
+     TOAST
+  ═══════════════════════════════ */
+  let toastTimer;
+  function showToast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2800);
+  }
+
+  /* ═══════════════════════════════
+     HELPERS
+  ═══════════════════════════════ */
+  function escHtml(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function getISODate(){
+    const d = new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0');
+  }
+  function formatDisplayDate(dateStr){
+    if(!dateStr) return "-";
+    if(/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
+      const p = dateStr.split("-");
+      const d = new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+      if(!isNaN(d.getTime())){
+        return String(d.getDate()).padStart(2,'0') + " " + d.toLocaleString('en-US',{month:'short'});
+      }
+    }
+    return dateStr;
+  }
+  function fmt(n){ return Number(n).toLocaleString('en-IN'); }
+
+  /* UTF-8 safe base64 helpers (used for the Android bridge, which only
+     accepts base64 strings). Avoids the deprecated escape()/unescape(). */
+  function utf8ToBase64(str){
+    const bytes = new TextEncoder().encode(str);
+    let binary = "";
+    for(let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+  }
+  function base64ToUtf8(b64){
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  const ICON_EDIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  const ICON_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>';
+  const ICON_DRAG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>';
+
+  /* ═══════════════════════════════
+     DROPDOWN MENU
+  ═══════════════════════════════ */
+  function toggleDropdown(){
+    const menu = document.getElementById('dropdownMenu');
+    const isOpen = menu.classList.contains('open');
+    if(isOpen){ closeDropdown(); }
+    else { menu.classList.add('open'); }
+  }
+  function closeDropdown(){
+    document.getElementById('dropdownMenu').classList.remove('open');
+  }
+  document.addEventListener('click', function(e){
+    const menu = document.getElementById('dropdownMenu');
+    const btn = document.getElementById('menuBtn');
+    if(menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)){
+      closeDropdown();
+    }
+  });
+
+  /* ═══════════════════════════════
+     MODAL
+  ═══════════════════════════════ */
+  function openModal(opts){
+    const overlay = document.getElementById("modalOverlay");
+    document.getElementById("modalTitle").textContent = opts.title||"";
+    document.getElementById("modalMsg").textContent   = opts.msg||"";
+    const sInp = document.getElementById("modalInput");
+    const editForm = document.getElementById("editForm");
+    if(opts.isEditForm){
+      sInp.style.display="none"; editForm.style.display="block";
+      document.getElementById("editAmount").value = opts.editValAmt||"";
+      document.getElementById("editReason").value = opts.editValRsn||"";
+      const dateWrap = document.getElementById("editDateWrap");
+      const dateInp = document.getElementById("editDate");
+      if(opts.showDate){
+        dateWrap.style.display="block";
+        dateInp.value = opts.editValDate || getISODate();
+      } else {
+        dateWrap.style.display="none";
+      }
+      setTimeout(function(){ document.getElementById("editAmount").focus(); },100);
+    } else if(opts.input){
+      editForm.style.display="none"; sInp.style.display="block";
+      sInp.value = opts.inputVal||""; sInp.placeholder = opts.inputPlaceholder||"";
+      setTimeout(function(){ sInp.focus(); sInp.select(); },100);
+    } else {
+      sInp.style.display="none"; editForm.style.display="none";
+    }
+    const btns = document.getElementById("modalBtns");
+    btns.innerHTML="";
+    (opts.buttons||[]).forEach(function(b){
+      const el = document.createElement("button");
+      el.className = "modal-btn "+(b.cls||"");
+      el.textContent = b.label;
+      el.onclick = function(){
+        if(b.cb){
+          if(opts.isEditForm){
+            const a = document.getElementById("editAmount").value;
+            const r = document.getElementById("editReason").value;
+            const dt = document.getElementById("editDate").value;
+            const close = b.cb(a,r,dt);
+            if(close !== false) closeModal();
+          } else {
+            b.cb(sInp.value);
+            closeModal();
+          }
+        } else { closeModal(); }
+      };
+      btns.appendChild(el);
+    });
+    overlay.classList.add("show");
+  }
+  function closeModal(){ document.getElementById("modalOverlay").classList.remove("show"); }
+  document.getElementById("modalOverlay").addEventListener("click", function(e){
+    if(e.target === this) closeModal();
+  });
+
+  /* ═══════════════════════════════
+     RENDER
+  ═══════════════════════════════ */
+  function render(){
+    if(currentPage === 'main') renderMain();
+    else renderBudget();
+    save();
+  }
+
+  function renderMain(){
+    const cont = document.getElementById("tabs");
+    cont.innerHTML = "";
+    appData.tabs.forEach(function(t, i){
+      const d = document.createElement("div");
+      d.className = "tab-chip" + (i === appData.active ? " active" : "");
+      d.textContent = t.name;
+      d.onclick = function(){ appData.active = i; render(); };
+      cont.appendChild(d);
+    });
+
+    document.getElementById("budget").value = currentTab().budget;
+    const total = currentTab().items.reduce(function(a,b){ return a + Number(b.amount); }, 0);
+    const budget = Number(currentTab().budget);
+    const statsEl = document.getElementById("stats");
+
+    if(currentTab().budget && budget > 0){
+      const rem = budget - total;
+      const pct = Math.max(0, Math.min(100, (total/budget)*100));
+      statsEl.innerHTML =
+        '<div class="overview-figures">'+
+          '<div class="overview-figure"><div class="overview-figure-label">Spent</div><div class="overview-figure-val red">৳'+fmt(total)+'</div></div>'+
+          '<div class="overview-divider"></div>'+
+          '<div class="overview-figure"><div class="overview-figure-label">'+(rem<0?'Over Budget':'Remaining')+'</div><div class="overview-figure-val '+(rem<0?'red':'green')+'">৳'+fmt(Math.abs(rem))+'</div></div>'+
+        '</div>'+
+        '<div class="progress-track"><div class="progress-fill'+(rem<0?' over':'')+'" style="width:'+pct+'%"></div></div>'+
+        '<div class="progress-meta">'+pct.toFixed(0)+'% of budget used</div>';
+    } else {
+      statsEl.innerHTML =
+        '<div class="overview-figures">'+
+          '<div class="overview-figure"><div class="overview-figure-label">Total Spent</div><div class="overview-figure-val accent">৳'+fmt(total)+'</div></div>'+
+          '<div class="overview-divider"></div>'+
+          '<div class="overview-figure"><div class="overview-figure-label">Entries</div><div class="overview-figure-val">'+currentTab().items.length+'</div></div>'+
+        '</div>';
+    }
+
+    const list = document.getElementById("list");
+    document.getElementById("entry-count").textContent = currentTab().items.length + " entries";
+    list.innerHTML = "";
+    if(currentTab().items.length === 0){
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h10a1 1 0 011 1v17l-3-2-2 2-2-2-2 2-3-2V4a1 1 0 011-1z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div><div class="empty-text">No expenses yet.<br>Add your first one above.</div></div>';
+    } else {
+      currentTab().items.forEach(function(x, i){
+        const d = document.createElement("div");
+        d.className = "list-row";
+        d.setAttribute("draggable","true");
+        d.setAttribute("data-type","main");
+        d.setAttribute("data-index", i);
+        d.innerHTML =
+          '<div class="drag-handle" title="Drag to reorder">'+ICON_DRAG+'</div>'+
+          '<div class="list-row-body">'+
+            '<div class="list-row-top">'+
+              '<div class="list-row-title"><span class="list-row-index">'+(i+1)+'</span>'+escHtml(x.reason)+'</div>'+
+              '<div class="list-row-amount">৳'+fmt(x.amount)+'</div>'+
+            '</div>'+
+            '<div class="list-row-bottom">'+
+              '<span class="list-row-date">'+formatDisplayDate(x.date)+'</span>'+
+              '<div class="list-row-actions">'+
+                '<button class="icon-btn" title="Edit" onclick="editRow(\'main\','+i+')">'+ICON_EDIT+'</button>'+
+                '<button class="icon-btn del" title="Delete" onclick="delRow(\'main\','+i+')">'+ICON_TRASH+'</button>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+        attachDragEvents(d);
+        attachTouchDragEvents(d);
+        list.appendChild(d);
+      });
+    }
+  }
+
+  function renderBudget(){
+    const inc = Number(appData.monthly.income) || 0;
+    document.getElementById("monthly-income").value = appData.monthly.income;
+    const tFixed = appData.monthly.fixed.reduce(function(a,b){ return a + Number(b.amount); }, 0);
+    const tVar   = appData.monthly.variable.reduce(function(a,b){ return a + Number(b.amount); }, 0);
+    const tCost  = tFixed + tVar;
+    const rem    = inc - tCost;
+
+    document.getElementById("budget-summary").innerHTML =
+      '<div class="budget-summary-item">'+
+        '<div class="budget-summary-label">Income</div>'+
+        '<div class="budget-summary-val">৳'+fmt(inc)+'</div>'+
+      '</div>'+
+      '<div class="budget-summary-divider"></div>'+
+      '<div class="budget-summary-item">'+
+        '<div class="budget-summary-label">Total Cost</div>'+
+        '<div class="budget-summary-val red">৳'+fmt(tCost)+'</div>'+
+      '</div>'+
+      '<div class="budget-summary-divider"></div>'+
+      '<div class="budget-summary-item">'+
+        '<div class="budget-summary-label">Remaining</div>'+
+        '<div class="budget-summary-val '+(rem<0?'red':'green')+'">৳'+fmt(rem)+'</div>'+
+      '</div>';
+
+    const vlist = document.getElementById("var-list");
+    vlist.innerHTML = "";
+    if(appData.monthly.variable.length === 0){
+      vlist.innerHTML = '<div class="empty-state" style="padding:22px 20px;"><div class="empty-text">No variable costs added.</div></div>';
+    } else {
+      appData.monthly.variable.forEach(function(x, i){
+        const d = document.createElement("div");
+        d.className = "list-row";
+        d.setAttribute("draggable","true");
+        d.setAttribute("data-type","variable");
+        d.setAttribute("data-index", i);
+        d.innerHTML =
+          '<div class="drag-handle" title="Drag to reorder">'+ICON_DRAG+'</div>'+
+          '<div class="list-row-body">'+
+            '<div class="list-row-top">'+
+              '<div class="list-row-title"><span class="list-row-index">'+(i+1)+'</span>'+escHtml(x.reason)+'</div>'+
+              '<div class="list-row-amount">৳'+fmt(x.amount)+'</div>'+
+            '</div>'+
+            '<div class="list-row-bottom list-row-bottom-end">'+
+              '<div class="list-row-actions">'+
+                '<button class="icon-btn" title="Edit" onclick="editRow(\'variable\','+i+')">'+ICON_EDIT+'</button>'+
+                '<button class="icon-btn del" title="Delete" onclick="delRow(\'variable\','+i+')">'+ICON_TRASH+'</button>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+        attachDragEvents(d);
+        attachTouchDragEvents(d);
+        vlist.appendChild(d);
+      });
+    }
+
+    const flist = document.getElementById("fixed-list");
+    flist.innerHTML = "";
+    if(appData.monthly.fixed.length === 0){
+      flist.innerHTML = '<div class="empty-state" style="padding:22px 20px;"><div class="empty-text">No fixed costs added.</div></div>';
+    } else {
+      appData.monthly.fixed.forEach(function(x, i){
+        const d = document.createElement("div");
+        d.className = "list-row";
+        d.setAttribute("draggable","true");
+        d.setAttribute("data-type","fixed");
+        d.setAttribute("data-index", i);
+        d.innerHTML =
+          '<div class="drag-handle" title="Drag to reorder">'+ICON_DRAG+'</div>'+
+          '<div class="list-row-body">'+
+            '<div class="list-row-top">'+
+              '<div class="list-row-title"><span class="list-row-index">'+(i+1)+'</span>'+escHtml(x.reason)+'</div>'+
+              '<div class="list-row-amount">৳'+fmt(x.amount)+'</div>'+
+            '</div>'+
+            '<div class="list-row-bottom list-row-bottom-end">'+
+              '<div class="list-row-actions">'+
+                '<button class="icon-btn" title="Edit" onclick="editRow(\'fixed\','+i+')">'+ICON_EDIT+'</button>'+
+                '<button class="icon-btn del" title="Delete" onclick="delRow(\'fixed\','+i+')">'+ICON_TRASH+'</button>'+
+              '</div>'+
+            '</div>'+
+          '</div>';
+        attachDragEvents(d);
+        attachTouchDragEvents(d);
+        flist.appendChild(d);
+      });
+    }
+  }
+
+  /* ═══════════════════════════════
+     EVENTS: ADD EXPENSE
+  ═══════════════════════════════ */
+  (function(){
+    var _lastAdd = 0;
+    document.getElementById("addExpenseBtn").addEventListener("click", function(){
+      var now = Date.now(); if(now - _lastAdd < 20) return; _lastAdd = now;
+      const a = document.getElementById("amount").value.trim();
+      const r = document.getElementById("reason").value.trim();
+      const dInput = document.getElementById("expense-date");
+      const dt = (dInput && dInput.value) ? dInput.value : getISODate();
+      if(!a || !r){ showToast("Please enter both amount and description"); return; }
+      const num = parseFloat(a);
+      if(isNaN(num) || num <= 0){ showToast("Please enter a valid amount"); return; }
+      if(num > 99999999){ showToast("Amount is too large"); return; }
+      if(r.length > 200){ showToast("Description is too long"); return; }
+      currentTab().items.push({amount:String(num), reason:r, date:dt});
+      document.getElementById("amount").value = "";
+      document.getElementById("reason").value = "";
+      if(dInput) dInput.value = getISODate();
+      render();
+    });
+  })();
+
+  (function(){
+    function onEnterClick(inputId, btnId){
+      document.getElementById(inputId).addEventListener("keydown", function(e){
+        if(e.key === "Enter"){ e.preventDefault(); document.getElementById(btnId).click(); }
+      });
+    }
+    onEnterClick("amount", "addExpenseBtn");
+    onEnterClick("reason", "addExpenseBtn");
+    onEnterClick("fixed-amount", "addFixedBtn");
+    onEnterClick("fixed-reason", "addFixedBtn");
+    onEnterClick("var-amount", "addVarBtn");
+    onEnterClick("var-reason", "addVarBtn");
+  })();
+
+  (function(){
+    let budgetTimer, incomeTimer;
+    document.getElementById("budget").addEventListener("input", function(e){
+      currentTab().budget = e.target.value;
+      clearTimeout(budgetTimer);
+      budgetTimer = setTimeout(render, 300);
+    });
+    document.getElementById("monthly-income").addEventListener("input", function(e){
+      appData.monthly.income = e.target.value;
+      clearTimeout(incomeTimer);
+      incomeTimer = setTimeout(render, 300);
+    });
+  })();
+
+  /* ═══════════════════════════════
+     EVENTS: ADD FIXED / VARIABLE
+  ═══════════════════════════════ */
+  (function(){
+    var _lastFixed = 0;
+    document.getElementById("addFixedBtn").addEventListener("click", function(){
+      var now = Date.now(); if(now - _lastFixed < 20) return; _lastFixed = now;
+      const a = document.getElementById("fixed-amount").value.trim();
+      const r = document.getElementById("fixed-reason").value.trim();
+      if(!a || !r){ showToast("Please enter both amount and item name"); return; }
+      const num = parseFloat(a);
+      if(isNaN(num) || num <= 0){ showToast("Please enter a valid amount"); return; }
+      if(num > 99999999){ showToast("Amount is too large"); return; }
+      if(r.length > 200){ showToast("Item name is too long"); return; }
+      appData.monthly.fixed.push({amount:String(num), reason:r});
+      document.getElementById("fixed-amount").value = "";
+      document.getElementById("fixed-reason").value = "";
+      render();
+    });
+  })();
+
+  (function(){
+    var _lastVar = 0;
+    document.getElementById("addVarBtn").addEventListener("click", function(){
+      var now = Date.now(); if(now - _lastVar < 20) return; _lastVar = now;
+      const a = document.getElementById("var-amount").value.trim();
+      const r = document.getElementById("var-reason").value.trim();
+      if(!a || !r){ showToast("Please enter both amount and reason"); return; }
+      const num = parseFloat(a);
+      if(isNaN(num) || num <= 0){ showToast("Please enter a valid amount"); return; }
+      if(num > 99999999){ showToast("Amount is too large"); return; }
+      if(r.length > 200){ showToast("Reason is too long"); return; }
+      appData.monthly.variable.push({amount:String(num), reason:r, done:false});
+      document.getElementById("var-amount").value = "";
+      document.getElementById("var-reason").value = "";
+      render();
+    });
+  })();
+
+  /* ═══════════════════════════════
+     DRAG AND DROP (Mouse + Touch)
+  ═══════════════════════════════ */
+  let dragSrc = null;
+  let dragType = null;
+
+  function attachDragEvents(el){
+    el.addEventListener("dragstart", function(e){
+      dragSrc = el;
+      dragType = el.getAttribute("data-type");
+      setTimeout(function(){ el.classList.add("dragging"); }, 0);
+      e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("dragend", function(){
+      el.classList.remove("dragging");
+      document.querySelectorAll(".list-row").forEach(function(x){ x.classList.remove("drag-over"); });
+      dragSrc = null; dragType = null;
+    });
+    el.addEventListener("dragover", function(e){
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      if(el !== dragSrc && el.getAttribute("data-type") === dragType){
+        document.querySelectorAll(".list-row").forEach(function(x){ x.classList.remove("drag-over"); });
+        el.classList.add("drag-over");
+      }
+    });
+    el.addEventListener("dragleave", function(){
+      el.classList.remove("drag-over");
+    });
+    el.addEventListener("drop", function(e){
+      e.preventDefault();
+      el.classList.remove("drag-over");
+      if(!dragSrc || el === dragSrc) return;
+      const fromIdx = parseInt(dragSrc.getAttribute("data-index"));
+      const toIdx   = parseInt(el.getAttribute("data-index"));
+      const type    = el.getAttribute("data-type");
+      if(type !== dragType) return;
+      const arr = type === "fixed" ? appData.monthly.fixed : (type === "variable" ? appData.monthly.variable : currentTab().items);
+      const moved = arr.splice(fromIdx, 1)[0];
+      arr.splice(toIdx, 0, moved);
+      render();
+    });
+  }
+
+  /* Touch drag (mobile) */
+  let touchDragEl   = null;
+  let touchClone    = null;
+  let touchType     = null;
+  let touchFromIdx  = null;
+  let touchLastOver = null;
+  let touchInitRect = null;
+  let touchOffsetX  = 0;
+  let touchOffsetY  = 0;
+
+  function attachTouchDragEvents(el){
+    const handle = el.querySelector(".drag-handle");
+    if(!handle) return;
+
+    handle.addEventListener("touchstart", function(e){
+      e.preventDefault();
+      touchDragEl  = el;
+      touchType    = el.getAttribute("data-type");
+      touchFromIdx = parseInt(el.getAttribute("data-index"));
+
+      touchInitRect = el.getBoundingClientRect();
+      const t0 = e.touches[0];
+      touchOffsetX = t0.clientX - touchInitRect.left;
+      touchOffsetY = t0.clientY - touchInitRect.top;
+
+      touchClone = el.cloneNode(true);
+      touchClone.style.cssText = [
+        "position:fixed","z-index:9999","pointer-events:none",
+        "width:"+touchInitRect.width+"px",
+        "left:"+(t0.clientX - touchOffsetX)+"px",
+        "top:"+(t0.clientY - touchOffsetY)+"px",
+        "opacity:0.9","box-shadow:0 12px 32px rgba(0,0,0,0.5)",
+        "border-radius:var(--radius-sm)","transition:none","background:var(--card)"
+      ].join(";");
+      document.body.appendChild(touchClone);
+      el.classList.add("dragging");
+    }, {passive:false});
+
+    handle.addEventListener("touchmove", function(e){
+      e.preventDefault();
+      if(!touchClone) return;
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - touchOffsetX) + "px";
+      touchClone.style.top  = (t.clientY - touchOffsetY) + "px";
+
+      touchClone.style.display = "none";
+      const underEl = document.elementFromPoint(t.clientX, t.clientY);
+      touchClone.style.display = "";
+
+      const selector = ".list-row";
+      const overItem = underEl ? underEl.closest(selector) : null;
+
+      document.querySelectorAll(".list-row").forEach(function(x){ x.classList.remove("drag-over"); });
+      if(overItem && overItem !== touchDragEl && overItem.getAttribute("data-type") === touchType){
+        overItem.classList.add("drag-over");
+        touchLastOver = overItem;
+      } else {
+        touchLastOver = null;
+      }
+    }, {passive:false});
+
+    handle.addEventListener("touchend", function(e){
+      e.preventDefault();
+      if(touchClone){ touchClone.remove(); touchClone = null; }
+      if(touchDragEl) touchDragEl.classList.remove("dragging");
+      document.querySelectorAll(".list-row").forEach(function(x){ x.classList.remove("drag-over"); });
+
+      if(touchLastOver && touchDragEl && touchLastOver !== touchDragEl){
+        const toIdx = parseInt(touchLastOver.getAttribute("data-index"));
+        const arr = touchType === "fixed" ? appData.monthly.fixed : (touchType === "variable" ? appData.monthly.variable : currentTab().items);
+        const moved = arr.splice(touchFromIdx, 1)[0];
+        arr.splice(toIdx, 0, moved);
+        render();
+      }
+      touchDragEl = null; touchType = null; touchFromIdx = null; touchLastOver = null;
+      touchInitRect = null; touchOffsetX = 0; touchOffsetY = 0;
+    }, {passive:false});
+  }
+
+  /* ═══════════════════════════════
+     EDIT / DELETE ROW
+  ═══════════════════════════════ */
+  function editRow(type, index){
+    let item;
+    if(type==='main') item = currentTab().items[index];
+    else if(type==='fixed') item = appData.monthly.fixed[index];
+    else if(type==='variable') item = appData.monthly.variable[index];
+    if(!item) return;
+    const isMain = (type === 'main');
+    let dateVal = getISODate();
+    if(isMain && item.date && /^\d{4}-\d{2}-\d{2}$/.test(item.date)) dateVal = item.date;
+    openModal({
+      title:"Edit Entry", isEditForm:true,
+      editValAmt: item.amount, editValRsn: item.reason,
+      showDate: isMain, editValDate: dateVal,
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Save", cls:"primary", cb:function(newAmt, newRsn, newDate){
+          newRsn = String(newRsn||"").trim();
+          const parsedAmt = parseFloat(newAmt);
+          if(!newAmt || !newRsn || isNaN(parsedAmt) || parsedAmt <= 0){ showToast("Please enter valid details"); return false; }
+          if(parsedAmt > 99999999){ showToast("Amount is too large"); return false; }
+          if(newRsn.length > 200){ showToast("Description is too long"); return false; }
+          item.amount = String(parsedAmt); item.reason = newRsn;
+          if(isMain) item.date = newDate || item.date;
+          render(); showToast("Entry updated ✓");
+        }}
+      ]
+    });
+  }
+
+  function delRow(type, index){
+    if(type==='main') currentTab().items.splice(index, 1);
+    else if(type==='fixed') appData.monthly.fixed.splice(index, 1);
+    else if(type==='variable') appData.monthly.variable.splice(index, 1);
+    render();
+  }
+
+  /* ═══════════════════════════════
+     TAB MANAGEMENT
+  ═══════════════════════════════ */
+  document.getElementById("addTabBtn").addEventListener("click", function(){
+    openModal({
+      title:"New Tab", input:true, inputPlaceholder:"Tab name...",
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Create", cls:"primary", cb:function(val){
+          val = (val||"").trim(); if(!val){ showToast("Please enter a name"); return; }
+          appData.tabs.push({name:val, budget:"", items:[]});
+          appData.active = appData.tabs.length - 1; render();
+        }}
+      ]
+    });
+  });
+
+  document.getElementById("renameTabBtn").addEventListener("click", function(){
+    openModal({
+      title:"Rename Tab", input:true, inputVal:currentTab().name,
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Rename", cls:"primary", cb:function(val){
+          val = (val||"").trim(); if(!val){ showToast("Please enter a name"); return; }
+          currentTab().name = val; render();
+        }}
+      ]
+    });
+  });
+
+  document.getElementById("deleteTabBtn").addEventListener("click", function(){
+    if(appData.tabs.length === 1){ showToast("At least one tab must remain"); return; }
+    openModal({
+      title:"Delete Tab?", msg:'"'+currentTab().name+'" will be permanently deleted.',
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Delete", cls:"danger-btn", cb:function(){
+          appData.tabs.splice(appData.active, 1);
+          if(appData.active >= appData.tabs.length) appData.active = appData.tabs.length - 1;
+          render();
+        }}
+      ]
+    });
+  });
+
+  /* ═══════════════════════════════
+     CLEAR — Context-aware
+  ═══════════════════════════════ */
+  function updateClearLabels(){
+    const el1 = document.getElementById("clearLabel");
+    const el2 = document.getElementById("clearLabel2");
+    if(el1) el1.textContent = "Clear";
+    if(el2) el2.textContent = currentPage === 'budget' ? "Clear Budget" : "Clear Tab";
+  }
+
+  function doClearCurrent(){
+    if(currentPage === 'budget'){
+      openModal({
+        title:"Clear Budget Data?",
+        msg:"Monthly income, fixed costs, and variable costs will all be cleared.",
+        buttons:[
+          {label:"Cancel", cls:""},
+          {label:"Clear Budget", cls:"danger-btn", cb:function(){
+            appData.monthly = {income:"", fixed:[], variable:[]};
+            render(); showToast("Budget data cleared");
+          }}
+        ]
+      });
+    } else {
+      const tabName = currentTab().name;
+      openModal({
+        title:'Clear "'+tabName+'"?',
+        msg:"All expenses and the budget limit for this tab will be cleared.",
+        buttons:[
+          {label:"Cancel", cls:""},
+          {label:"Clear Tab", cls:"danger-btn", cb:function(){
+            currentTab().items = [];
+            currentTab().budget = "";
+            render(); showToast('"'+tabName+'" cleared');
+          }}
+        ]
+      });
+    }
+  }
+
+  document.getElementById("clearBtn").addEventListener("click", doClearCurrent);
+  document.getElementById("clearBtn2").addEventListener("click", doClearCurrent);
+
+  document.querySelectorAll('input[type="number"]').forEach(function(inp){
+    inp.addEventListener("keydown", function(e){
+      if(e.key === "-" || e.key === "e" || e.key === "E") e.preventDefault();
+    });
+  });
+
+  document.getElementById("modalInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      const btns = document.querySelectorAll("#modalBtns .modal-btn");
+      const primaryBtn = Array.from(btns).find(function(b){ return b.classList.contains("primary"); });
+      if(primaryBtn) primaryBtn.click();
+    }
+  });
+  document.getElementById("editAmount").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); document.getElementById("editReason").focus(); }
+  });
+  document.getElementById("editReason").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      const btns = document.querySelectorAll("#modalBtns .modal-btn");
+      const primaryBtn = Array.from(btns).find(function(b){ return b.classList.contains("primary"); });
+      if(primaryBtn) primaryBtn.click();
+    }
+  });
+
+  /* ═══════════════════════════════
+     RESET ALL DATA
+  ═══════════════════════════════ */
+  function doResetAll(){
+    openModal({
+      title:"Reset All Data?",
+      msg:"All tab data and budget history will be permanently deleted.",
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Reset All", cls:"danger-btn", cb:function(){
+          appData = {
+            tabs:[{name:"Main Budget", budget:"", items:[]}],
+            active:0,
+            monthly:{income:"", fixed:[], variable:[]}
+          };
+          render(); showToast("All data has been reset");
+        }}
+      ]
+    });
+  }
+  document.getElementById("resetBtn2").addEventListener("click", doResetAll);
+
+  /* ═══════════════════════════════
+     JSON BACKUP / RESTORE
+  ═══════════════════════════════ */
+  const APP_NAME = "Safwan Exp - Expense Tracker";
+  const APP_VERSION = "2.0";
+  const BACKUP_SCHEMA = 1;
+
+  function buildBackupObject(){
+    return {
+      app: APP_NAME,
+      version: APP_VERSION,
+      schema: BACKUP_SCHEMA,
+      createdAt: new Date().toISOString(),
+      deviceTimestamp: Date.now(),
+      data: {
+        appData: appData,
+        theme: document.documentElement.classList.contains("light") ? "light" : "dark",
+        meta: {
+          firstUse: localStorage.getItem("xpns_firstUse"),
+          lastBackup: localStorage.getItem("xpns_lastBackup")
+        }
+      }
+    };
+  }
+
+  function backupFilename(){
+    const d = new Date();
+    const p = function(n){ return String(n).padStart(2,'0'); };
+    return "ExpenseTracker_Backup_"+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"_"+p(d.getHours())+"-"+p(d.getMinutes())+".json";
+  }
+
+  function markBackupDone(){
+    localStorage.setItem("xpns_lastBackup", Date.now().toString());
+  }
+
+  function doBackup(){
+    try{
+      if(!appData || !Array.isArray(appData.tabs)){ showToast("Backup failed: invalid data"); return; }
+      const backupObj = buildBackupObject();
+      const json = JSON.stringify(backupObj, null, 2);
+      const filename = backupFilename();
+      if(isAndroid){
+        const b64 = utf8ToBase64(json);
+        window.onAndroidSaveResult = function(status, msg){
+          if(status === "ok"){ markBackupDone(); showToast("Backup successful ✓"); }
+          else showToast("Failed: "+msg);
+          window.onAndroidSaveResult = null;
+        };
+        AndroidBridge.saveFile(b64, filename);
+      } else {
+        const blob = new Blob([json], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        markBackupDone();
+        showToast("Backup successful ✓");
+      }
+    } catch(err){ showToast("Backup failed: "+err.message); }
+  }
+
+  document.getElementById("exportBtn2").addEventListener("click", doBackup);
+
+  function validateBackupSchema(obj){
+    if(!obj || typeof obj !== 'object') return "File is not in a valid format";
+    if(typeof obj.schema !== 'number') return "Missing backup schema information";
+    if(!obj.data || typeof obj.data !== 'object') return "Missing backup data";
+    if(!obj.data.appData || typeof obj.data.appData !== 'object') return "Missing app data";
+    if(!Array.isArray(obj.data.appData.tabs)) return "Tabs data is missing or invalid";
+    return null;
+  }
+
+  function parseAndRestore(jsonText){
+    let obj;
+    try{ obj = JSON.parse(jsonText); }
+    catch(e){ showToast("Invalid or corrupted JSON file"); return; }
+    const errMsg = validateBackupSchema(obj);
+    if(errMsg){ showToast("Backup file is invalid: "+errMsg); return; }
+    openModal({
+      title:"Restore Backup?",
+      msg:"This will replace all existing data with the selected backup. This action cannot be undone. Continue?",
+      buttons:[
+        {label:"Cancel", cls:""},
+        {label:"Restore", cls:"danger-btn", cb:function(){
+          try{
+            const restored = obj.data.appData;
+            if(!Array.isArray(restored.tabs) || restored.tabs.length === 0){
+              restored.tabs = [{name:"Main Budget", budget:"", items:[]}];
+            }
+            restored.tabs.forEach(function(t){
+              if(!Array.isArray(t.items)) t.items = [];
+              if(t.budget === undefined || t.budget === null) t.budget = "";
+              if(!t.name) t.name = "Tab";
+            });
+            if(typeof restored.active !== 'number' || restored.active < 0 || restored.active >= restored.tabs.length){
+              restored.active = 0;
+            }
+            if(!restored.monthly || typeof restored.monthly !== 'object'){
+              restored.monthly = { income: "", fixed: [], variable: [] };
+            }
+            if(!Array.isArray(restored.monthly.fixed)) restored.monthly.fixed = [];
+            if(!Array.isArray(restored.monthly.variable)) restored.monthly.variable = [];
+            if(restored.monthly.income === undefined || restored.monthly.income === null) restored.monthly.income = "";
+            restored.monthly.variable.forEach(function(v){ if(v.done === undefined) v.done = false; });
+
+            appData = restored;
+            save();
+
+            if(obj.data.theme === "light"){
+              document.documentElement.classList.add("light");
+              localStorage.setItem("xpns_theme","light");
+            } else {
+              document.documentElement.classList.remove("light");
+              localStorage.setItem("xpns_theme","dark");
+            }
+            applyTheme();
+            currentPage = 'main';
+            switchPage('main');
+            showToast("Restore successful ✓");
+          } catch(e){ showToast("Restore failed: "+e.message); }
+        }}
+      ]
+    });
+  }
+
+  function doRestore(){
+    if(isAndroid) AndroidBridge.openFilePicker();
+    else { document.getElementById("fileInput").value = ""; document.getElementById("fileInput").click(); }
+  }
+
+  document.getElementById("importBtn2").addEventListener("click", doRestore);
+
+  window.onAndroidFileContent = function(base64Data){
+    try{
+      const jsonText = base64ToUtf8(base64Data);
+      parseAndRestore(jsonText);
+    } catch(e){ showToast("Restore failed: file could not be read"); }
+  };
+
+  document.getElementById("fileInput").addEventListener("change", function(e){
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    const ext = f.name.split('.').pop().toLowerCase();
+    if(ext !== 'json'){ showToast("Only .json files can be restored"); e.target.value = ""; return; }
+    const r = new FileReader();
+    r.onload = function(ev){ parseAndRestore(ev.target.result); };
+    r.readAsText(f);
+    e.target.value = "";
+  });
+
+  /* ═══════════════════════════════
+     BACKUP REMINDER
+  ═══════════════════════════════ */
+  function checkBackupReminder(){
+    const DAY = 24*60*60*1000;
+    const now = Date.now();
+    let firstUse = localStorage.getItem("xpns_firstUse");
+    if(!firstUse){
+      firstUse = now.toString();
+      localStorage.setItem("xpns_firstUse", firstUse);
+    }
+    const todayStr = getISODate();
+    if(localStorage.getItem("xpns_lastReminderDate") === todayStr) return;
+
+    const lastBackup = localStorage.getItem("xpns_lastBackup");
+    let shouldRemind = false;
+    if(!lastBackup){
+      if(now - Number(firstUse) > 7*DAY) shouldRemind = true;
+    } else {
+      if(now - Number(lastBackup) > 7*DAY) shouldRemind = true;
+    }
+    if(shouldRemind){
+      localStorage.setItem("xpns_lastReminderDate", todayStr);
+      openModal({
+        title:"Backup Reminder",
+        msg:"It has been more than 7 days since your last backup. Creating a backup only takes a few seconds and helps protect your data.",
+        buttons:[
+          {label:"Later", cls:""},
+          {label:"Backup Now", cls:"primary", cb:function(){ doBackup(); }}
+        ]
+      });
+    }
+  }
+
+  /* ═══════════════════════════════
+     THEME
+  ═══════════════════════════════ */
+  function applyTheme(){
+    const isDark = !document.documentElement.classList.contains("light");
+    const icon = document.getElementById("themeIcon");
+    const dropLabel = document.getElementById("themeDropLabel");
+    const icon2 = document.getElementById("themeIcon2");
+    const deskLabel = document.getElementById("themeLabelDesk");
+
+    const moonPath = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    const sunPaths = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+    if(isDark){
+      if(icon) icon.innerHTML = moonPath;
+      if(icon2) icon2.innerHTML = moonPath;
+      if(dropLabel) dropLabel.textContent = "Light Mode";
+      if(deskLabel) deskLabel.textContent = "Light Mode";
+    } else {
+      if(icon) icon.innerHTML = sunPaths;
+      if(icon2) icon2.innerHTML = sunPaths;
+      if(dropLabel) dropLabel.textContent = "Dark Mode";
+      if(deskLabel) deskLabel.textContent = "Dark Mode";
+    }
+
+    /* Keep the OS status bar / notification center in sync with the actual
+       theme, so its text/icon color never gets stuck from a previous
+       session (fixes white-on-white / black-on-black after reopening). */
+    const metaTheme = document.getElementById("themeColorMeta");
+    if(metaTheme) metaTheme.setAttribute("content", isDark ? "#0a0b0d" : "#f7f6f1");
+
+    /* For the native Android wrapper: the meta tag above does nothing inside
+       a WebView, so tell the native side directly via the bridge. */
+    if(typeof isAndroid !== "undefined" && isAndroid && window.AndroidBridge && AndroidBridge.setStatusBarStyle){
+      try{ AndroidBridge.setStatusBarStyle(isDark); }catch(e){}
+    }
+  }
+
+  (function(){
+    const stored = localStorage.getItem("xpns_theme");
+    if(stored === "light") document.documentElement.classList.add("light");
+    applyTheme();
+  })();
+
+  function toggleTheme(){
+    document.documentElement.classList.toggle("light");
+    localStorage.setItem("xpns_theme",
+      document.documentElement.classList.contains("light") ? "light" : "dark");
+    applyTheme();
+  }
+
+  document.getElementById("themeBtn2").addEventListener("click", toggleTheme);
+
+  /* ═══════════════════════════════
+     BOOT
+  ═══════════════════════════════ */
+  (function(){
+    const dInput = document.getElementById("expense-date");
+    if(dInput && !dInput.value) dInput.value = getISODate();
+  })();
+  render();
+  updateClearLabels();
+  setTimeout(checkBackupReminder, 600);
+</script>
+</body>
+</html>

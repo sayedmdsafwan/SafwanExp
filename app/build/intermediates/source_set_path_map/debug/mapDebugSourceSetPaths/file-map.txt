@@ -1,0 +1,27 @@
+com.safwan.exp.app-appcompat-1.6.1-0 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\04e46a8d3c8153f6579eeb183168a9cb\transformed\appcompat-1.6.1\res
+com.safwan.exp.app-emoji2-1.2.0-1 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\146aba1c553634b3f470641b636cebdc\transformed\emoji2-1.2.0\res
+com.safwan.exp.app-emoji2-views-helper-1.2.0-2 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\23b705698f07e4a1f8ec5dc64feaa92a\transformed\emoji2-views-helper-1.2.0\res
+com.safwan.exp.app-lifecycle-viewmodel-savedstate-2.6.2-3 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\3f874efb9a48e0ab6d1c294d9417fcb7\transformed\lifecycle-viewmodel-savedstate-2.6.2\res
+com.safwan.exp.app-lifecycle-runtime-2.6.2-4 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\4b741d1ba33d441b6b27aa23b54dd4ba\transformed\lifecycle-runtime-2.6.2\res
+com.safwan.exp.app-core-runtime-2.2.0-5 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\4e3c3be39442879b62aada44e060d0a9\transformed\core-runtime-2.2.0\res
+com.safwan.exp.app-fragment-1.3.6-6 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\5086291df603f2b4664aebc9469c92a9\transformed\fragment-1.3.6\res
+com.safwan.exp.app-lifecycle-viewmodel-2.6.2-7 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\6632895488424b07dbb17f42c4242c05\transformed\lifecycle-viewmodel-2.6.2\res
+com.safwan.exp.app-activity-1.6.0-8 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\6b839b752463610c7cfac81995d5473e\transformed\activity-1.6.0\res
+com.safwan.exp.app-savedstate-1.2.1-9 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\7ad65f84f0ac19eae701ef11ca48cd20\transformed\savedstate-1.2.1\res
+com.safwan.exp.app-lifecycle-livedata-2.6.2-10 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\7d559bbc62e16c725426ee15672de662\transformed\lifecycle-livedata-2.6.2\res
+com.safwan.exp.app-profileinstaller-1.3.0-11 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\be9d6fa95ea667a8fe2f596d8b26f7df\transformed\profileinstaller-1.3.0\res
+com.safwan.exp.app-webkit-1.11.0-12 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\bf57fdcd22dcb7aa156ac373f27b40e8\transformed\webkit-1.11.0\res
+com.safwan.exp.app-lifecycle-livedata-core-2.6.2-13 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\cc3b3a17b9e2c74b5f5a5e0465ca7000\transformed\lifecycle-livedata-core-2.6.2\res
+com.safwan.exp.app-annotation-experimental-1.4.0-14 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\d312df361e2a490699c7d769d7d1d834\transformed\annotation-experimental-1.4.0\res
+com.safwan.exp.app-startup-runtime-1.1.1-15 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ddbef65b4d7f267e7e72b7a8cfca43ec\transformed\startup-runtime-1.1.1\res
+com.safwan.exp.app-core-ktx-1.13.1-16 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\e589bc90de1b7f47bd6df57e22d1865e\transformed\core-ktx-1.13.1\res
+com.safwan.exp.app-lifecycle-process-2.6.2-17 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\e9435e910867ba0b2a3241f056400343\transformed\lifecycle-process-2.6.2\res
+com.safwan.exp.app-appcompat-resources-1.6.1-18 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ebf0ee28b99a122a50be4b5d6c5d7e3a\transformed\appcompat-resources-1.6.1\res
+com.safwan.exp.app-core-1.13.1-19 C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ecd9b5c7e028c3b7840beb6f89088ab4\transformed\core-1.13.1\res
+com.safwan.exp.app-pngs-20 F:\Android Studio Projects\SafwanExpWebView\app\build\generated\res\pngs\debug
+com.safwan.exp.app-resValues-21 F:\Android Studio Projects\SafwanExpWebView\app\build\generated\res\resValues\debug
+com.safwan.exp.app-packageDebugResources-22 F:\Android Studio Projects\SafwanExpWebView\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.safwan.exp.app-packageDebugResources-23 F:\Android Studio Projects\SafwanExpWebView\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.safwan.exp.app-debug-24 F:\Android Studio Projects\SafwanExpWebView\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.safwan.exp.app-debug-25 F:\Android Studio Projects\SafwanExpWebView\app\src\debug\res
+com.safwan.exp.app-main-26 F:\Android Studio Projects\SafwanExpWebView\app\src\main\res

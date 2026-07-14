@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.safwan.exp.app-mergeDebugResources-22:/values-h720dp-v13/values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Safwan HO-772.SAFWAN\\.gradle\\caches\\transforms-4\\04e46a8d3c8153f6579eeb183168a9cb\\transformed\\appcompat-1.6.1\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}
