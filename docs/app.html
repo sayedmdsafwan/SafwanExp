@@ -1557,6 +1557,7 @@
         const b64 = utf8ToBase64(json);
         window.onAndroidSaveResult = function(status, msg){
           if(status === "ok"){ markBackupDone(); showToast("Backup successful ✓"); }
+          else if(status === "cancelled"){ /* user backed out of the picker, no error */ }
           else showToast("Failed: "+msg);
           window.onAndroidSaveResult = null;
         };

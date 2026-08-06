@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-31:12
-INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-31:12
-INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-31:12
-INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-31:12
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:1-28:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ebf0ee28b99a122a50be4b5d6c5d7e3a\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\04e46a8d3c8153f6579eeb183168a9cb\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.webkit:webkit:1.11.0] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\bf57fdcd22dcb7aa156ac373f27b40e8\transformed\webkit-1.11.0\AndroidManifest.xml:2:1-7:12
@@ -42,15 +42,9 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Safwan HO-772.SAFWA
 		INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:2:11-69
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:6:5-8:38
-	android:maxSdkVersion
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:8:9-35
-	android:name
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:7:9-65
 application
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:10:5-29:19
-INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:10:5-29:19
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:8:5-26:19
+INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:8:5-26:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\146aba1c553634b3f470641b636cebdc\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\146aba1c553634b3f470641b636cebdc\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.core:core:1.13.1] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ecd9b5c7e028c3b7840beb6f89088ab4\transformed\core-1.13.1\AndroidManifest.xml:28:5-89
@@ -65,42 +59,40 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Safwan HO-772.SAFW
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ddbef65b4d7f267e7e72b7a8cfca43ec\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
 		INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml
-	android:requestLegacyExternalStorage
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:16:9-52
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\Safwan HO-772.SAFWAN\.gradle\caches\transforms-4\ecd9b5c7e028c3b7840beb6f89088ab4\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:14:9-41
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:12:9-41
 	android:roundIcon
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:13:9-48
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:11:9-48
 	android:icon
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:12:9-43
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:10:9-43
 	android:allowBackup
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:11:9-35
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:9:9-35
 	android:theme
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:15:9-47
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:13:9-47
 	android:usesCleartextTraffic
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:17:9-45
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:14:9-45
 activity#com.safwan.exp.MainActivity
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:19:9-28:20
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:16:9-25:20
 	android:exported
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:21:13-36
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:18:13-36
 	android:configChanges
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:22:13-74
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:19:13-74
 	android:theme
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:23:13-51
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:20:13-51
 	android:name
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:20:13-41
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:17:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:24:13-27:29
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:21:13-24:29
 action#android.intent.action.MAIN
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:25:17-69
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:22:17-69
 	android:name
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:25:25-66
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:22:25-66
 category#android.intent.category.LAUNCHER
-ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:26:17-77
+ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:23:17-77
 	android:name
-		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:26:27-74
+		ADDED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml:23:27-74
 uses-sdk
 INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from F:\Android Studio Projects\SafwanExp\app\src\main\AndroidManifest.xml

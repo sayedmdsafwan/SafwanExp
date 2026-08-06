@@ -1,162 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safwan Exp · Expense Ledger</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0;}
-    :root{
-      --bg:#f7f6f1;
-      --card:#ffffff;
-      --border:#e8e5db;
-      --text:#171a1a;
-      --text2:#5c625f;
-      --text3:#96988f;
-      --accent:#1c8f63;
-      --accent2:#166f4d;
-      --accent-glow:rgba(28,143,99,0.14);
-      --accent-soft:rgba(28,143,99,0.09);
-      --chip-bg:#f8f7f2;
-      --shadow:0 10px 26px -10px rgba(20,20,15,0.18);
-      color-scheme:light;
-    }
-    html.dark{
-      --bg:#0a0b0d;
-      --card:#15171b;
-      --border:#212428;
-      --text:#f4f5f6;
-      --text2:#98a0a6;
-      --text3:#5a6067;
-      --accent:#2fc48d;
-      --accent2:#22a375;
-      --accent-glow:rgba(47,196,141,0.20);
-      --accent-soft:rgba(47,196,141,0.12);
-      --chip-bg:#15171b;
-      --shadow:0 10px 26px -10px rgba(47,196,141,0.35);
-      color-scheme:dark;
-    }
-    body{
-      font-family:'Inter',sans-serif;
-      background:var(--bg);
-      background-image:radial-gradient(circle at 12% 0%, var(--accent-glow), transparent 42%);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      transition:background .25s, color .25s;
-    }
-    .theme-toggle{
-      position:fixed;top:20px;right:20px;
-      width:40px;height:40px;border-radius:999px;
-      border:1.4px solid var(--border);background:var(--card);color:var(--text2);
-      display:flex;align-items:center;justify-content:center;cursor:pointer;
-      transition:all .15s;
-    }
-    .theme-toggle:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
-    .theme-toggle svg{width:18px;height:18px;}
-    .card{
-      max-width:460px;
-      width:100%;
-      text-align:center;
-    }
-    .logo{
-      width:64px;height:64px;border-radius:18px;
-      display:flex;align-items:center;justify-content:center;
-      margin:0 auto 22px;
-      background:linear-gradient(155deg, var(--accent-soft), transparent 70%);
-      border:1.6px solid var(--accent);
-      font-size:28px;font-weight:700;color:var(--accent);
-      font-family:monospace;
-    }
-    h1{font-size:26px;font-weight:800;letter-spacing:-0.4px;margin-bottom:8px;}
-    p.tagline{color:var(--text2);font-size:14.5px;line-height:1.6;margin-bottom:30px;}
-    .features{
-      display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:34px;
-    }
-    .chip{
-      font-size:11.5px;font-weight:600;color:var(--text2);
-      background:var(--chip-bg);border:1px solid var(--border);
-      padding:6px 12px;border-radius:999px;
-    }
-    .btn-row{display:flex;flex-direction:column;gap:12px;}
-    .btn{
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      padding:15px;border-radius:14px;font-weight:700;font-size:14.5px;
-      text-decoration:none;transition:filter .15s,transform .1s;
-    }
-    .btn:active{transform:scale(.98);}
-    .btn-primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));color:#ffffff;
-      box-shadow:var(--shadow);
-    }
-    html.dark .btn-primary{color:#04140d;}
-    .btn-primary:hover{filter:brightness(1.08);}
-    .btn-secondary{
-      background:transparent;color:var(--text);border:1.4px solid var(--border);
-    }
-    .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
-    footer{margin-top:34px;font-size:11.5px;color:var(--text3);}
-    footer a{color:var(--text3);}
-    .note{font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.6;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safwan Exp — offline expense tracker & budget planner</title>
+<meta name="description" content="A simple, offline-first expense tracker and monthly budget planner. No ads, no accounts, nothing leaves your device. Try the live demo right here, or download the Android APK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f6f1;
+    --card:#ffffff;
+    --card2:#fbfaf6;
+    --border:#e8e5db;
+    --border2:#d9d5c7;
+    --text:#171a1a;
+    --text2:#5c625f;
+    --text3:#96988f;
+    --accent:#1c8f63;
+    --accent2:#166f4d;
+    --accent-glow:rgba(28,143,99,0.16);
+    --accent-soft:rgba(28,143,99,0.10);
+    --red:#c22f47;
+    --red-soft:rgba(194,47,71,0.08);
+    --shadow:0 20px 44px -20px rgba(20,20,15,0.18);
+    --shadow-lg:0 30px 68px -26px rgba(22,111,77,0.28);
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:radial-gradient(circle at 12% 0%, var(--accent-glow), transparent 42%);
+    background-repeat:no-repeat;
+    color:var(--text);
+    font-family:'Inter','Hind Siliguri',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .bn{ font-family:'Hind Siliguri','Inter',sans-serif; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 24px; }
+  a{ color:inherit; }
+  img,svg{ display:block; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* ---------- recurring device: a small taka-mark medallion ----------
+     the app deals in one currency, so a tiny circular "৳" mark stands in
+     here for every bullet and eyebrow, instead of a generic dot. it
+     doubles as a quiet callback to the app's own ৳ figures. */
+  .taka{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:15px; height:15px; border-radius:50%; flex:none;
+    background:var(--accent-soft); color:var(--accent);
+    font-size:10px; font-weight:800; font-family:'Hind Siliguri',sans-serif;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.76rem; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--accent2); margin-bottom:16px; font-weight:700;
+  }
+  .divider{
+    display:flex; align-items:center; gap:14px;
+    max-width:1100px; margin:0 auto; padding:0 24px;
+  }
+  .divider .line{ flex:1; height:1px; background:var(--border2); }
+
+  nav.top{
+    position:sticky; top:0; z-index:20;
+    background:rgba(247,246,241,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  nav.top .wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:800; text-decoration:none; color:var(--text); font-size:1.02rem; }
+  .brand .mark{
+    width:26px; height:26px; border-radius:8px; flex:none;
+    background:linear-gradient(155deg, var(--accent), var(--accent2));
+    color:#fff; display:flex; align-items:center; justify-content:center;
+    font-family:'Hind Siliguri',sans-serif; font-size:13px; font-weight:800;
+  }
+  nav.top .links{ display:flex; align-items:center; gap:22px; font-size:0.92rem; color:var(--text2); }
+  nav.top .links a{ text-decoration:none; transition:color .2s; white-space:nowrap; }
+  nav.top .links a:hover{ color:var(--accent2); }
+  nav.top .links .gh{ display:flex; align-items:center; }
+  nav.top .links .gh svg{ width:19px; height:19px; }
+
+  header.hero{ padding:72px 0 60px; }
+  .hero .wrap{ display:grid; grid-template-columns:1.08fr 0.92fr; gap:52px; align-items:center; }
+  h1{
+    font-weight:800; letter-spacing:-0.5px;
+    font-size:clamp(2.15rem, 4.2vw, 3.05rem);
+    line-height:1.14; margin:0 0 8px; color:var(--text);
+  }
+  h1 .bn-line{
+    display:block; font-family:'Hind Siliguri', sans-serif;
+    font-weight:700; font-size:0.42em; color:var(--accent2); margin-top:14px;
+  }
+  .lede{ font-size:1.04rem; color:var(--text2); max-width:48ch; margin:20px 0 30px; }
+  .cta-row{ display:flex; flex-wrap:wrap; gap:14px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:9px;
+    padding:14px 22px; border-radius:12px; font-weight:700; font-size:0.94rem;
+    text-decoration:none; border:1.4px solid transparent; cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, filter .15s ease;
+  }
+  .btn:active{ transform:translateY(1px) scale(.99); }
+  .btn.primary{ background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; box-shadow:var(--shadow); }
+  .btn.primary:hover{ filter:brightness(1.07); box-shadow:0 26px 52px -20px rgba(22,111,77,0.4); transform:translateY(-1px); }
+  .btn.ghost{ background:var(--card); border-color:var(--border2); color:var(--text); }
+  .btn.ghost:hover{ border-color:var(--accent); color:var(--accent2); }
+  .btn svg{ width:17px; height:17px; }
+
+  /* ---------- signature: the budget dial ----------
+     the app's home screen is built around a spend-vs-budget ring; the
+     hero visual is that same idea, scaled up, animating in on load so
+     the two glances (spent / remaining) it stands for feel alive rather
+     than a static screenshot. */
+  .dial-wrap{ display:flex; align-items:center; justify-content:center; }
+  .dial-plate{
+    position:relative;
+    width:min(360px, 82vw); aspect-ratio:1;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--border2);
+    box-shadow:var(--shadow-lg), inset 0 0 0 8px var(--bg);
+  }
+  .dial-plate svg{ width:100%; height:100%; }
+  .dial-arc{
+    stroke-dasharray:534; stroke-dashoffset:534;
+    animation:fillDial 1.8s cubic-bezier(.2,.8,.2,1) .25s forwards;
+  }
+  .dial-figure{
+    animation:riseIn .7s ease .9s both;
+  }
+  @keyframes fillDial{ to{ stroke-dashoffset:171; } }
+  @keyframes riseIn{
+    0%{ opacity:0; transform:translateY(6px); }
+    100%{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dial-arc{ animation:none; stroke-dashoffset:171; }
+    .dial-figure{ animation:none; }
+  }
+
+  section{ padding:60px 0; }
+  .section-head{ max-width:56ch; margin:0 0 34px; }
+  h2{ font-size:clamp(1.5rem, 2.6vw, 1.95rem); margin:0 0 10px; font-weight:800; letter-spacing:-0.3px; }
+  .section-head p{ color:var(--text2); margin:0; }
+
+  #demo{ background:var(--card2); }
+  .demo-frame-outer{ display:flex; flex-direction:column; align-items:center; gap:20px; }
+  /* device mockup: the iframe is always given a real phone's width (390px)
+     so the app lays out exactly as on a real device, then the whole frame
+     is scaled down with a transform to fit small screens — shrinking type
+     and layout together instead of reflowing them. */
+  .phone-stage{ width:100%; max-width:390px; display:flex; justify-content:center; }
+  .phone{
+    width:390px; flex:none;
+    background:linear-gradient(160deg, var(--accent2), #0b2e21);
+    border-radius:34px; padding:12px; box-shadow:var(--shadow); position:relative;
+    border:1px solid rgba(28,143,99,0.35);
+    transform-origin:top center;
+  }
+  .phone::before{
+    content:""; position:absolute; top:20px; left:50%; transform:translateX(-50%);
+    width:64px; height:5px; border-radius:4px; background:rgba(255,255,255,0.28);
+  }
+  .phone .screen{ background:var(--bg); border-radius:24px; overflow:hidden; aspect-ratio:9/19.5; }
+  .phone iframe{ width:100%; height:100%; border:0; display:block; }
+  .demo-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .demo-note{ font-size:0.85rem; color:var(--text3); max-width:46ch; text-align:center; margin:0; }
+
+  /* features: twin cards, not template icons */
+  .feature-row{ display:grid; grid-template-columns:1fr 1fr; gap:24px; position:relative; }
+  .feature-card{
+    background:var(--card); border:1px solid var(--border2); border-radius:18px;
+    padding:34px 28px 28px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+  }
+  .feature-card .badge{
+    width:52px; height:52px; border-radius:14px;
+    background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:6px;
+  }
+  .feature-card .badge svg{ width:24px; height:24px; stroke:var(--accent2); }
+  .feature-card h3{ font-size:1.14rem; margin:0; font-weight:800; }
+  .feature-card p{ margin:0; color:var(--text2); font-size:0.95rem; }
+
+  .pill-row{ margin-top:24px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .pill{
+    display:flex; align-items:center; gap:8px;
+    background:transparent; border:1px solid var(--border2); border-radius:999px;
+    padding:9px 16px; font-size:0.85rem; color:var(--text2);
+  }
+  .pill .taka{ width:16px; height:16px; font-size:9px; }
+
+  /* download: an inscribed plaque, corner-bracketed */
+  .plaque{
+    position:relative;
+    background:var(--card); border:1px solid var(--border2); border-radius:8px; padding:36px;
+    display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center; box-shadow:var(--shadow);
+  }
+  .plaque::before, .plaque::after,
+  .plaque .br-tl, .plaque .br-br{ content:""; position:absolute; width:20px; height:20px; border:2px solid var(--accent); }
+  .plaque::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .plaque::after{ top:-1px; right:-1px; border-left:none; border-bottom:none; }
+  .plaque .br-tl{ bottom:-1px; left:-1px; border-right:none; border-top:none; }
+  .plaque .br-br{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+  .plaque .meta{ display:flex; gap:20px; margin-top:16px; flex-wrap:wrap; }
+  .plaque .meta div{ font-size:0.82rem; color:var(--text3); }
+  .plaque .meta b{ display:block; color:var(--text); font-size:0.94rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
+  .warn{
+    margin-top:22px; padding:14px 16px; border-radius:8px;
+    background:rgba(194,47,71,0.07); border:1px solid rgba(194,47,71,0.22); font-size:0.85rem; color:#8a2338;
+  }
+
+  footer{ border-top:1px solid var(--border); padding:30px 0 46px; }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  footer .mark{ display:flex; align-items:center; gap:8px; color:var(--text3); font-size:0.85rem; }
+  footer p{ margin:0; }
+  footer a{ text-decoration:none; color:var(--text2); }
+  footer a:hover{ color:var(--accent2); }
+
+  @media (max-width: 860px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .dial-wrap{ order:-1; }
+    .feature-row{ grid-template-columns:1fr; gap:20px; }
+    .plaque{ grid-template-columns:1fr; text-align:left; }
+    .plaque .btn{ justify-self:start; }
+  }
+  @media (max-width: 640px){
+    header.hero{ padding:48px 0 40px; }
+    section{ padding:42px 0; }
+    nav.top .links{ gap:14px; }
+    nav.top .links a:not(.gh){ display:none; }
+    .plaque{ padding:24px; }
+  }
+</style>
 </head>
 <body>
-<button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-</button>
 
-<div class="card">
-  <div class="logo">৳</div>
-  <h1>Safwan Exp</h1>
-  <p class="tagline">A simple, offline-first expense tracker and monthly budget planner. No account, no ads, no data leaves your device.</p>
-
-  <div class="features">
-    <span class="chip">Multi-tab expenses</span>
-    <span class="chip">Monthly budget planner</span>
-    <span class="chip">Backup &amp; restore</span>
-    <span class="chip">Dark / Light theme</span>
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark">৳</span>
+      Safwan Exp
+    </a>
+    <div class="links">
+      <a href="#demo">Live demo</a>
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a class="gh" href="https://github.com/sayedmdsafwan/SafwanExp" aria-label="View source on GitHub" title="View source on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.79-.25.79-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .3.21.66.8.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+      </a>
+    </div>
   </div>
+</nav>
 
-  <div class="btn-row">
-    <a class="btn btn-primary" href="app.html">🚀 Try Live Demo (in browser)</a>
-    <a class="btn btn-secondary" href="https://github.com/sayedmdsafwan/SafwanExp/releases/latest/download/app-debug.apk">⬇ Download Android APK</a>
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow"><span class="taka">৳</span> Offline · No ads · Android</div>
+      <h1>Track expenses.<br>Plan your budget.
+        <span class="bn-line">খরচের হিসাব ও বাজেট, এক জায়গায়</span>
+      </h1>
+      <p class="lede">Safwan Exp keeps a running ledger across as many tabs as you need, plans a monthly budget against fixed and variable costs, and does all of it offline. No ads, no account, no data ever leaves your device.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#demo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Try the live demo
+        </a>
+        <a class="btn ghost" href="#download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+          Download APK
+        </a>
+      </div>
+    </div>
+
+    <div class="dial-wrap">
+      <div class="dial-plate">
+        <svg viewBox="0 0 340 340">
+          <circle cx="170" cy="170" r="135" fill="none" stroke="var(--border)" stroke-width="1"/>
+          <circle cx="170" cy="170" r="85" fill="none" stroke="var(--border)" stroke-width="14"/>
+          <circle class="dial-arc" cx="170" cy="170" r="85" fill="none" stroke="var(--accent)" stroke-width="14"
+                  stroke-linecap="round" transform="rotate(-90 170 170)"/>
+          <g class="dial-figure" font-family="Inter" text-anchor="middle">
+            <text x="170" y="162" font-size="13" font-weight="700" letter-spacing="1" fill="var(--text3)">REMAINING</text>
+            <text x="170" y="196" font-family="JetBrains Mono" font-size="30" font-weight="700" fill="var(--text)">৳6,420</text>
+          </g>
+          <g font-family="Inter" fill="var(--text3)" font-size="11" font-weight="700" letter-spacing="0.5">
+            <text x="170" y="46" text-anchor="middle">BUDGET</text>
+            <text x="294" y="174" text-anchor="middle">SPENT</text>
+            <text x="170" y="304" text-anchor="middle">SAVED</text>
+            <text x="46" y="174" text-anchor="middle">LEFT</text>
+          </g>
+        </svg>
+      </div>
+    </div>
   </div>
+</header>
 
-  <p class="note">The live demo runs fully in your browser — nothing is installed. For the full Android app experience (with native backup/restore to your Downloads folder), download the APK instead.</p>
+<div class="divider"><span class="line"></span><span class="taka">৳</span><span class="line"></span></div>
 
-  <footer>
+<section id="demo">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="taka">৳</span> Live demo</div>
+      <h2>Try it right here</h2>
+      <p>This is the actual app running in the page below — the same screen you'd see after installing the APK. Nothing to install, no separate tab needed.</p>
+    </div>
+    <div class="demo-frame-outer">
+      <div class="phone-stage" id="phoneStage">
+        <div class="phone" id="phoneMock">
+          <div class="screen">
+            <iframe src="app.html" title="Safwan Exp live demo" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="demo-actions">
+        <a class="btn ghost" href="app.html" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Open full screen
+        </a>
+      </div>
+      <p class="demo-note">Runs entirely in your browser — nothing is installed, and no data leaves your device. Backup/restore inside this demo uses your browser's own download picker, same idea as the app's native picker.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="line"></span><span class="taka">৳</span><span class="line"></span></div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="taka">৳</span> What it does</div>
+      <h2>Nothing more than you need</h2>
+    </div>
+    <div class="feature-row">
+      <div class="feature-card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        </div>
+        <h3>Multi-tab expense ledger</h3>
+        <p>Keep separate expense lists per tab — one per month, one per trip, one per project — each with its own running total and optional budget cap.</p>
+      </div>
+      <div class="feature-card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        </div>
+        <h3>Monthly budget planner</h3>
+        <p>Set your income, list fixed and variable costs, and see exactly what's left over — updated live as you add or check off items.</p>
+      </div>
+    </div>
+    <div class="pill-row">
+      <span class="pill"><span class="taka">৳</span> Works fully offline</span>
+      <span class="pill"><span class="taka">৳</span> No ads, no accounts</span>
+      <span class="pill"><span class="taka">৳</span> Backup &amp; restore anywhere you choose</span>
+      <span class="pill"><span class="taka">৳</span> Dark / light theme</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="line"></span><span class="taka">৳</span><span class="line"></span></div>
+
+<section id="download">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="taka">৳</span> Get the app</div>
+      <h2>Download for Android</h2>
+    </div>
+    <div class="plaque">
+      <span class="br-tl"></span><span class="br-br"></span>
+      <div>
+        <b style="font-size:1.1rem;">app-debug.apk</b>
+        <div class="meta">
+          <div><b>Build</b>Debug</div>
+          <div><b>Platform</b>Android</div>
+          <div><b>Source</b>Built from this repository</div>
+        </div>
+        <div class="warn">
+          This is a debug build for testing, not a signed release. Android will warn about
+          "unknown sources" — allow installs from your browser/file manager the first time to proceed.
+        </div>
+      </div>
+      <a class="btn primary"
+         href="https://github.com/sayedmdsafwan/SafwanExp/releases/latest/download/app-debug.apk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+        Download APK
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="mark">
+      <span class="taka">৳</span>
+      <p>Safwan Exp — offline expense tracker &amp; budget planner.</p>
+    </div>
     <a href="https://github.com/sayedmdsafwan/SafwanExp">View source on GitHub</a>
-  </footer>
-</div>
+  </div>
+</footer>
 
 <script>
-  const MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-  const SUN  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-
-  const icon = document.getElementById('themeIcon');
-  const toggle = document.getElementById('themeToggle');
-
-  function applyTheme(){
-    const isDark = document.documentElement.classList.contains('dark');
-    icon.innerHTML = isDark ? SUN : MOON;
-  }
-
-  // Default is light mode. Only switch to dark if the user previously chose it.
-  if(localStorage.getItem('landing_theme') === 'dark'){
-    document.documentElement.classList.add('dark');
-  }
-  applyTheme();
-
-  toggle.addEventListener('click', function(){
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('landing_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    applyTheme();
-  });
+  // Scale the phone mockup to fit its stage without ever rendering the app
+  // iframe narrower than a real device (390px), so the demo's own layout
+  // stays stable across all screen sizes and just shrinks visually to fit.
+  (function(){
+    var stage = document.getElementById('phoneStage');
+    var phone = document.getElementById('phoneMock');
+    if(!stage || !phone) return;
+    function fit(){
+      var available = stage.getBoundingClientRect().width;
+      var natural = phone.offsetWidth;
+      var scale = Math.min(1, available / natural);
+      phone.style.transform = 'scale(' + scale + ')';
+      stage.style.height = (phone.offsetHeight * scale) + 'px';
+    }
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
+  })();
 </script>
 </body>
 </html>
