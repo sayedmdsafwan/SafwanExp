@@ -44,6 +44,25 @@ import java.io.IOException
  * "application/octet-stream" - a strict MIME filter made valid backup
  * files show up greyed out / unselectable. The .json extension is still
  * verified in Kotlin before handing the file back to the WebView.
+ *
+ * FIX NOTE (First-install zoomed-in bug):
+ * On a completely fresh install, Android's WebView has no per-app
+ * "app_webview" data directory yet. The very first time a WebView is
+ * created in that state, Chromium computes its initial page scale
+ * before it has settled on the real device density/viewport metrics,
+ * so the page briefly renders zoomed in - purely a first-run cold-start
+ * quirk. Once the WebView data directory exists (which happens the
+ * moment the WebView is created), every later launch uses the correct
+ * scale immediately - matching exactly what was seen: broken only on
+ * first install, fine forever after leaving and reopening.
+ *
+ * `useWideViewPort` + `loadWithOverviewMode` force WebView to size the
+ * page against the actual device width and honor the page's own
+ * "width=device-width" viewport meta tag instead of trusting its own
+ * not-yet-settled first-run calculation. `textZoom = 100` additionally
+ * stops the OS "font size" accessibility setting from independently
+ * scaling WebView text on top of the page's own CSS. Together these
+ * make first launch match every later launch.
  */
 class MainActivity : AppCompatActivity() {
 
@@ -89,11 +108,24 @@ class MainActivity : AppCompatActivity() {
             allowFileAccess = true
             allowContentAccess = true
             cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
+            // See FIX NOTE (First-install zoomed-in bug) above the class.
+            useWideViewPort = true
+            loadWithOverviewMode = true
+            textZoom = 100
         }
+        // Extra safety net for the same first-install zoom bug: forcing a
+        // scale recalculation once the page has actually finished loading
+        // guarantees a correct render even on devices/OEM WebView builds
+        // where the settings above alone aren't enough on that first run.
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 // Keep everything inside the WebView; it's a single local page app.
                 return false
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                view?.setInitialScale(0)
             }
         }
         webView.webChromeClient = WebChromeClient()
