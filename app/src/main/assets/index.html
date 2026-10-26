@@ -1022,7 +1022,7 @@
               '<div class="list-row-amount">৳'+fmt(x.amount)+'</div>'+
             '</div>'+
             '<div class="list-row-bottom">'+
-              '<span class="list-row-date">'+formatDisplayDate(x.date)+'</span>'+
+              '<span class="list-row-date">'+escHtml(formatDisplayDate(x.date))+'</span>'+
               '<div class="list-row-actions">'+
                 '<button class="icon-btn" title="Edit" onclick="editRow(\'main\','+i+')">'+ICON_EDIT+'</button>'+
                 '<button class="icon-btn del" title="Delete" onclick="delRow(\'main\','+i+')">'+ICON_TRASH+'</button>'+
@@ -1516,7 +1516,7 @@
      JSON BACKUP / RESTORE
   ═══════════════════════════════ */
   const APP_NAME = "Safwan Exp - Expense Tracker";
-  const APP_VERSION = "2.0";
+  const APP_VERSION = "2.1";
   const BACKUP_SCHEMA = 1;
 
   function buildBackupObject(){
@@ -1580,10 +1580,73 @@
   function validateBackupSchema(obj){
     if(!obj || typeof obj !== 'object') return "File is not in a valid format";
     if(typeof obj.schema !== 'number') return "Missing backup schema information";
+    // Only reject backups NEWER than this build understands; older ones are
+    // still restorable because sanitizeAppData() fills in whatever is missing.
+    if(obj.schema > BACKUP_SCHEMA) return "This backup was made by a newer version of the app (schema "+obj.schema+")";
     if(!obj.data || typeof obj.data !== 'object') return "Missing backup data";
     if(!obj.data.appData || typeof obj.data.appData !== 'object') return "Missing app data";
     if(!Array.isArray(obj.data.appData.tabs)) return "Tabs data is missing or invalid";
     return null;
+  }
+
+  /* Everything below comes from a file the user picked — it is untrusted.
+     The expense list builds its rows as HTML strings, so a hand-edited or
+     corrupted backup could otherwise inject markup (and that markup would
+     run with access to AndroidBridge). Coerce every field to the exact type
+     and range the UI expects; anything unusable falls back to empty. */
+  function cleanAmount(v){
+    if(v === undefined || v === null) return "";
+    const s = String(v).trim();
+    return /^\d{1,8}(\.\d{1,2})?$/.test(s) ? s : "";
+  }
+  function cleanText(v, max){
+    return typeof v === "string" ? v.slice(0, max) : "";
+  }
+  function cleanDate(v){
+    if(typeof v !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return "";
+    const p = v.split("-");
+    const y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
+    // Real calendar check: Date() happily rolls 2026-02-30 over to March 2,
+    // so compare the components back instead of just testing for NaN.
+    const dt = new Date(y, m - 1, d);
+    if(dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) return "";
+    return v;
+  }
+  function cleanRows(list){
+    return (Array.isArray(list) ? list : []).map(function(r){
+      r = (r && typeof r === 'object') ? r : {};
+      return { amount: cleanAmount(r.amount), reason: cleanText(r.reason, 200) };
+    });
+  }
+  function sanitizeAppData(raw){
+    const tabs = (Array.isArray(raw.tabs) ? raw.tabs : []).map(function(t){
+      t = (t && typeof t === 'object') ? t : {};
+      const items = (Array.isArray(t.items) ? t.items : []).map(function(x){
+        x = (x && typeof x === 'object') ? x : {};
+        return {
+          amount: cleanAmount(x.amount),
+          reason: cleanText(x.reason, 200),
+          date: cleanDate(x.date)
+        };
+      });
+      return { name: cleanText(t.name, 60) || "Tab", budget: cleanAmount(t.budget), items: items };
+    });
+    if(tabs.length === 0) tabs.push({ name:"Main Budget", budget:"", items:[] });
+
+    let active = Number(raw.active);
+    if(!isFinite(active) || Math.floor(active) !== active || active < 0 || active >= tabs.length) active = 0;
+
+    const m = (raw.monthly && typeof raw.monthly === 'object') ? raw.monthly : {};
+    const rawVar = Array.isArray(m.variable) ? m.variable : [];
+    const variable = cleanRows(rawVar).map(function(r, i){
+      r.done = !!(rawVar[i] && typeof rawVar[i] === 'object' && rawVar[i].done);
+      return r;
+    });
+    return {
+      tabs: tabs,
+      active: active,
+      monthly: { income: cleanAmount(m.income), fixed: cleanRows(m.fixed), variable: variable }
+    };
   }
 
   function parseAndRestore(jsonText){
@@ -1599,26 +1662,7 @@
         {label:"Cancel", cls:""},
         {label:"Restore", cls:"danger-btn", cb:function(){
           try{
-            const restored = obj.data.appData;
-            if(!Array.isArray(restored.tabs) || restored.tabs.length === 0){
-              restored.tabs = [{name:"Main Budget", budget:"", items:[]}];
-            }
-            restored.tabs.forEach(function(t){
-              if(!Array.isArray(t.items)) t.items = [];
-              if(t.budget === undefined || t.budget === null) t.budget = "";
-              if(!t.name) t.name = "Tab";
-            });
-            if(typeof restored.active !== 'number' || restored.active < 0 || restored.active >= restored.tabs.length){
-              restored.active = 0;
-            }
-            if(!restored.monthly || typeof restored.monthly !== 'object'){
-              restored.monthly = { income: "", fixed: [], variable: [] };
-            }
-            if(!Array.isArray(restored.monthly.fixed)) restored.monthly.fixed = [];
-            if(!Array.isArray(restored.monthly.variable)) restored.monthly.variable = [];
-            if(restored.monthly.income === undefined || restored.monthly.income === null) restored.monthly.income = "";
-            restored.monthly.variable.forEach(function(v){ if(v.done === undefined) v.done = false; });
-
+            const restored = sanitizeAppData(obj.data.appData);
             appData = restored;
             save();
 
@@ -1736,9 +1780,12 @@
   }
 
   (function(){
-    // App always opens in light mode by default.
-    // User can still switch to dark using the toggle — it just won't be remembered on next open.
-    document.documentElement.classList.add("light");
+    // Remember the theme the user last picked. First launch (nothing saved)
+    // still opens in light mode, exactly as before.
+    let saved = null;
+    try{ saved = localStorage.getItem("xpns_theme"); }catch(e){}
+    if(saved === "dark") document.documentElement.classList.remove("light");
+    else document.documentElement.classList.add("light");
     applyTheme();
   })();
 
