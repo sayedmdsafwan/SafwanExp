@@ -115,7 +115,7 @@ Open the [live demo](https://sayedmdsafwan.github.io/SafwanExp/) in any browser,
 
 **Prerequisites**
 - [Android Studio](https://developer.android.com/studio) (recent stable version)
-- JDK 8 or newer (bundled with Android Studio)
+- JDK 17 or newer (the embedded JDK in current Android Studio works)
 - An internet connection for the first Gradle sync (downloads the Gradle distribution and dependencies)
 
 **Build & Run**
@@ -126,6 +126,15 @@ Open the [live demo](https://sayedmdsafwan.github.io/SafwanExp/) in any browser,
 
 **Build a release APK**
 **Build → Build Bundle(s) / APK(s) → Build APK(s)**, then locate the output via the notification that appears (typically `app/build/outputs/apk/debug/app-debug.apk` for a debug build).
+
+**Build from the command line**
+The Gradle wrapper is committed, so no local Gradle install is needed:
+
+```bash
+./gradlew assembleDebug     # debug APK -> app/build/outputs/apk/debug/
+```
+
+On Windows use `gradlew.bat`.
 
 ---
 
@@ -164,4 +173,4 @@ Safwan Exp does not collect, transmit, or store any data outside the user's own 
 
 ## License
 
-This project is currently unlicensed / private. Add a license of your choice (e.g. MIT) if you plan to share or open-source it.
+Released under the [MIT License](LICENSE). Use it, fork it, ship it.
